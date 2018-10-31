@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {signIn, signInWithGoogle} from '../../Store/Actions/authActions'
 
 import GoogleButton from 'react-google-button'
-
+import  {withRouter} from 'react-router-dom'
 class Signin extends Component {
 
     constructor(props) {
@@ -25,6 +25,7 @@ class Signin extends Component {
     handleGoogleLogin = (e) => { 
         e.preventDefault();
         this.props.signInWithGoogle();
+        this.props.history.replace('/');
     }
     handleSubmit = (e) =>  {
         e.preventDefault();
@@ -76,4 +77,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Signin);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Signin));
