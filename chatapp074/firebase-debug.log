@@ -1,0 +1,25 @@
+[debug] [2018-10-31T19:31:44.555Z] ----------------------------------------------------------------------
+[debug] [2018-10-31T19:31:44.558Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\TAI-DANG\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2018-10-31T19:31:44.559Z] CLI Version:   6.0.0
+[debug] [2018-10-31T19:31:44.559Z] Platform:      win32
+[debug] [2018-10-31T19:31:44.559Z] Node Version:  v8.9.4
+[debug] [2018-10-31T19:31:44.560Z] Time:          Thu Nov 01 2018 02:31:44 GMT+0700 (SE Asia Standard Time)
+[debug] [2018-10-31T19:31:44.560Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-10-31T19:31:44.578Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-10-31T19:31:44.579Z] > authorizing via signed-in user
+[debug] [2018-10-31T19:31:44.580Z] [iam] checking project chatapp074 for permissions ["firebase.projects.get"]
+[debug] [2018-10-31T19:31:44.583Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/chatapp074:testIamPermissions  
+
+[debug] [2018-10-31T19:31:45.893Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-31T19:31:45.894Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/chatapp074  
+ 
+[debug] [2018-10-31T19:31:47.050Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\TAI-DANG\Desktop\React-Redux\ChatApp\chatapp074'...
+[info] 
+[debug] [2018-10-31T19:31:47.053Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/78211760043/clients/_:getWebAppConfig  
+ 
+[debug] [2018-10-31T19:31:47.927Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: build
+[info] +  hosting: Local server: http://localhost:5000
