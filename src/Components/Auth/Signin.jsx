@@ -35,31 +35,37 @@ class Signin extends Component {
     render() {
         let authError = this.props.authError
         return (
-            <div className = "container"> 
-                <form onSubmit = {this.handleSubmit} className = "white"> 
-                    <h5 className = "grey-text text-darken-3">Sign In</h5>  
+            <div className = "container">
+               <div class="row">
+                    <h2><strong>Sign In </strong> </h2>
                     
-                    <div className = "input-field">
-                        <label htmlFor = "email">Email</label>
-                        <input type ="email" id = "email" onChange= {this.handleChange}/>
-                    </div>
-                    
-                    <div className = "input-field">
-                        <label htmlFor = "password">Password</label>
-                        <input type ="password" id = "password" onChange= {this.handleChange}/>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <form onSubmit =  {this.handleSubmit    }>
+                      <div class="form-group"> 
+                        <label htmlFor="exampleInputEmail1">Email</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange= {this.handleChange}/>
+                        </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password" onChange= {this.handleChange}/>
+                      </div>
+                      <div class="form-check">
+                      <GoogleButton onClick = {this.handleGoogleLogin}/>
+                      <br/>
+                        <button type="submit" class="btn btn-primary blue">Login</button>
+                      </div>
+                      
+                    </form>
                     </div>
 
-                    <div className = "red-text"> {authError? <p>{authError}</p> : null}
-                    </div>
-
-                    <GoogleButton onClick = {this.handleGoogleLogin}/>
-
-                    <div className = "input-field">
-                        <button className = "btn pink lighten-1 z-depth-0">Login</button>
-                    </div>
-
-                </form>
-            </div>
+               </div>
+			</div> 
+		
+		
+	
+		
+	
+        
         );
     }
 }

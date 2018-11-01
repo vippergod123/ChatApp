@@ -12,7 +12,7 @@ const SigninLink = (props) => {
     return (
         
         <ul className = "right">
-            <li> <NavLink to = "/create">New Project</NavLink> </li>
+            <li> <NavLink to = "/create">Friends</NavLink> </li>
             <li> <a to = "/signin" onClick = {props.signOut} >Sign Out</a> </li>
             <li> <NavLink to = "/"><Avatar googleID={props.auth.providerData["0"].uid} size = {40} round = {true}/> </NavLink> </li>
         </ul>
