@@ -56,7 +56,7 @@ class SigninLink extends Component {
         return (
             <Container>
         <ul className = "right">
-            <li> <NavLink to = "/create"><Button color="info">My Friends</Button></NavLink> </li>
+            <li> <NavLink to = "/chat"><Button color="info">Chat</Button></NavLink> </li>
             <li> {dropDownButton}</li>
         </ul>
         </Container>

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import ListFriends from './ListFriends'
 
+
+//component
 import  HeaderChat from './HeaderChat'
 import  HistoryChat from './HistoryChat'
 import  MessageChat from './MessageChat'
+
 import {connect} from 'react-redux'
 import {firebaseReducer} from 'react-redux-firebase'
 import { getFirebase, reactReduxFirebase } from 'react-redux-firebase'
@@ -11,17 +14,13 @@ class ChatFrame extends Component {
 
     constructor(props) {
         super(props)
-        
-        
     }
 
     render() {
 
-        
-        
-        return (<div>
-    
-        <div className="container">
+        return (
+        <div>
+            <div className="container">
         
             <ListFriends/>
             <div className="chat">
@@ -31,7 +30,7 @@ class ChatFrame extends Component {
             </div>
             </div>
             
-            </div>
+        </div>
         );
     }
 }

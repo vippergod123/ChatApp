@@ -51,6 +51,7 @@ class ListFriends extends Component {
         
         
         const userLogged = this.props.auth
+        
         var friends = this.props.friends
         var listUser = this.props.users
         

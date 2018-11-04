@@ -14,7 +14,7 @@ class HeaderChat extends Component {
 
         const cons = this.props.conversation
         const userLogged = this.props.auth
-        const users = this.props.userss
+        const users = this.props.users
 
         if (isEmpty(cons)) { 
             return (

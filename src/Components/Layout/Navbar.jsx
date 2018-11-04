@@ -36,7 +36,7 @@ class Navbar extends Component {
         return (
             <nav className = "nav-wrapper grey darken-3">
                 <div className = "container">
-                    <Link to= "/" className = "brand-logo">Chat App</Link>
+                    <a href= "/" className = "brand-logo">Chat App</a>
                     {links}
                 </div>
             </nav>
