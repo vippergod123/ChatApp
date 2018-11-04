@@ -72,23 +72,24 @@ class Dashboard extends Component {
             
         )}
         else if ( this.state.isLoaded === false)  { 
-             
-            return (
-                <div className = "container">
-                <br/>
-                <h1 className=""> List Friends</h1>
-                <LoadingSpinner/>
-                </div>
-        )}
-        else if ( this.state.isLogged === false )  { 
-            return (
-                <div className = "container">
-                <br/>
-                <h1 className="center"> Login to talk with friends</h1>
-                </div>
-        )}
-        
-        
+                if ( this.state.isLogged === false )  { 
+                    return (
+                        <div className = "container">
+                        <br/>
+                        <h1 className="center"> Login to talk with friends</h1>
+                        </div>
+                )}
+                
+                else {
+                return (
+                    <div className = "container">
+                    <br/>
+                    <h1 className=""> List Friends</h1>
+                    <LoadingSpinner/>
+                    <div className = "center">Refresh if it's loading too long...</div>
+                    </div>
+                )}
+            }
     }
 }
 
