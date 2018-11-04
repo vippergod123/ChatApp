@@ -81,8 +81,8 @@ class ListFriends extends Component {
                             const date = new Date(sec)
                             
                             return (
-                                <a onClick = {() => this.handleClick(userLogged,each)}>
-                                <li className="clearfix" key = {index}>
+                                <a key = {index} onClick = {() => this.handleClick(userLogged,each)}>
+                                <li className="clearfix" key={index}>
                                 
                                 <Avatar size="70"  src={each.photoURL}  className ="left" round = {true}/>
                                 <div className="about">

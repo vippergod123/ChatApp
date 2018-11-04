@@ -37,6 +37,7 @@ class Dashboard extends Component {
         const userLogged = this.props.auth
         
         const friends = this.state.friends
+       
         
         if (this.state.isLoaded === true) {
         return (  
@@ -66,7 +67,7 @@ class Dashboard extends Component {
             </div>
             
         )}
-        else if ( this.state.isLoaded === false)  { 
+        else if ( this.state.isLoaded === false && this.state.isLogged === true)  { 
             return (
                 <div className = "container">
                 <br/>
