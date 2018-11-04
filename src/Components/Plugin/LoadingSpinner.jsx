@@ -25,7 +25,7 @@ export default class LoadingSpinner extends React.Component {
           className={override}
           sizeUnit={"px"}
           size={50}
-          color={'#123abc'}
+          color={"white"}
           loading={this.state.loading}
         />
         </center>

@@ -1,0 +1,27 @@
+const initState = {}
+const userDatabaseReducer = (state = initState, action) => { 
+    switch( action.type ) { 
+        ////
+        case "CREAT_CONVERSATION_SUCCESS":
+            console.log('CREAT_CONVERSATION_SUCCESS');
+            return state;
+        case "CREAT_CONVERSATION_ERROR":
+            console.log('CREAT_CONVERSATION_ERROR', action.err);
+            return state;
+        ////
+        ////            
+        case "GET_CONVERSATION_SUCCESS":
+            console.log('GET_CONVERSATION_SUCCESS');
+            return action.conversation;
+        case "GET_CONVERSATION_ERROR":
+            console.log('GET_CONVERSATION_ERROR', action.err);
+            return state;
+
+
+        default:
+            return state
+    }
+    
+}
+
+export default userDatabaseReducer

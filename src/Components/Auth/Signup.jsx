@@ -21,43 +21,49 @@ class Signup extends Component {
 
     handleSubmit = (e) =>  {
         e.preventDefault();
-        console.log(this.state);
         
     }
 
     render() {
         return (
-            <div className = "container"> 
-                <form onSubmit = {this.handleSubmit} className = "white"> 
-                    <h5 className = "grey-text text-darken-3">Sign Up</h5>  
-                    
-                    <div className = "input-field">
-                        <label htmlFor = "text">FirstName</label>
-                        <input type ="text" id = "firstName" onChange= {this.handleChange}/>
-                    </div>
+          
 
-                    <div className = "input-field">
-                        <label htmlFor = "text">LastName</label>
-                        <input type ="text" id = "lastName" onChange= {this.handleChange}/>
-                    </div>
+        <div className = "container">
+        <div className="row">
+            <h2><strong>Sign Up </strong> </h2>
+            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <form onSubmit = {this.handleSubmit} className = "white"> 
+                        
+                        
+                        <div className = "input-field">
+                            <label htmlFor = "text">FirstName</label>
+                            <input type ="text" id = "firstName" onChange= {this.handleChange}/>
+                        </div>
 
-                    <div className = "input-field">
-                        <label htmlFor = "email">Email</label>
-                        <input type ="email" id = "email" onChange= {this.handleChange}/>
-                    </div>
-                    
-                    <div className = "input-field">
-                        <label htmlFor = "password">Password</label>
-                        <input type ="password" id = "password" onChange= {this.handleChange}/>
-                    </div>
+                        <div className = "input-field">
+                            <label htmlFor = "text">LastName</label>
+                            <input type ="text" id = "lastName" onChange= {this.handleChange}/>
+                        </div>
 
-                    <div className = "input-field">
-                        <button type="submit" class="btn btn-primary blue">Sign Up</button>
-                    </div>
-                    
-                </form>
+                        <div className = "input-field">
+                            <label htmlFor = "email">Email</label>
+                            <input type ="email" id = "email" onChange= {this.handleChange}/>
+                        </div>
+                        
+                        <div className = "input-field">
+                            <label htmlFor = "password">Password</label>
+                            <input type ="password" id = "password" onChange= {this.handleChange}/>
+                        </div>
+
+                        <div className = "input-field">
+                            <button type="submit" class="btn btn-primary blue">Sign Up</button>
+                        </div>
+                        
+                    </form>
             </div>
-        );
+            </div>
+        </div>
+        )
     }
 }
 

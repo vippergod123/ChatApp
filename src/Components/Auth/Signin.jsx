@@ -4,6 +4,10 @@ import {signIn, signInWithGoogle} from '../../Store/Actions/authActions'
 
 import GoogleButton from 'react-google-button'
 import  {withRouter} from 'react-router-dom'
+
+import {firebaseReducer} from 'react-redux-firebase'
+
+
 class Signin extends Component {
 
     constructor(props) {
@@ -26,6 +30,8 @@ class Signin extends Component {
         e.preventDefault();
         this.props.signInWithGoogle();
         this.props.history.replace('/');
+        
+        
     }
     handleSubmit = (e) =>  {
         e.preventDefault();
@@ -33,41 +39,35 @@ class Signin extends Component {
     }
 
     render() {
-        let authError = this.props.authError
         return (
             <div className = "container">
-               <div class="row">
-                    <h2><strong>Sign In </strong> </h2>
-                    
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <form onSubmit =  {this.handleSubmit    }>
-                      <div class="form-group"> 
-                        <label htmlFor="exampleInputEmail1">Email</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange= {this.handleChange}/>
-                        </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password" onChange= {this.handleChange}/>
-                      </div>
-                      <div class="form-check">
-                      <GoogleButton onClick = {this.handleGoogleLogin}/>
-                      <br/>
-                        <button type="submit" class="btn btn-primary blue">Login</button>
-                      </div>
-                      
-                    </form>
-                    </div>
+            <div className="row">
+                 <h2><strong>Sign In </strong> </h2>
+                 
+                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                 <form onSubmit =  {this.handleSubmit    }>
+                   <div className="form-group"> 
+                     <label htmlFor="exampleInputEmail1">Email</label>
+                     <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange= {this.handleChange}/>
+                     </div>
+                   <div className="form-group">
+                     <label for="exampleInputPassword1">Password</label>
+                     <input type="password" className="form-control" name="password" id="password" placeholder="Password" onChange= {this.handleChange}/>
+                   </div>
+                   <div className="form-check">
+                   <GoogleButton onClick = {this.handleGoogleLogin}/>
+                   <br/>
+                     <button type="submit" className="btn blue lighten-1 z-depth-0">Login</button>
+                   </div>
+                   
+                 </form>
+                 </div>
 
-               </div>
-			</div> 
-		
-		
-	
-		
-	
-        
-        );
-    }
+            </div>
+         </div> 
+     
+        )
+      }
 }
 
 const mapStateToProps = (state) => { 

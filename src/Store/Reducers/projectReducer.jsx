@@ -14,6 +14,13 @@ const projectReducer = (state = initState, action) => {
         case "CREATE_PROJECT_ERROR":
             console.log('Create project error', action.err);
             return state;
+
+        case "CREATE_USER":
+            return state;
+        case "CREATE_USER_ERROR":
+            console.log('Create USER error', action.err);
+            return state;
+
         default:
             return state
     }

@@ -1,4 +1,4 @@
-import { firebaseStateReducer } from "react-redux-firebase";
+import {firebaseReducer} from 'react-redux-firebase'
 
 export const signIn = (credentials) => { 
     return (dispatch , getState, {getFirebase}) => { 
@@ -24,10 +24,16 @@ export const signInWithGoogle = (credentials) => {
     return (dispatch, getState, {getFirebase}) => { 
         const firebase = getFirebase();
         const provider = new firebase.auth.GoogleAuthProvider()
+        
+        // Set Online database realtime userUID
+
+
         firebase.auth().signInWithPopup(
             provider
         ).then(() => 
-            { 
+            {   
+               ;
+               
             dispatch({
                 type: "LOGIN_GOOGLE_SUCCESS"})
             }).catch((err)=> 
@@ -36,7 +42,8 @@ export const signInWithGoogle = (credentials) => {
                     type: "LOGIN_GOOGLE_ERROR",
                     err:err,
             })
-        })  
+        })
+        
         
     }
 }
@@ -44,7 +51,8 @@ export const signInWithGoogle = (credentials) => {
 export const signOut = () => { 
     return (dispatch, getState, {getFirebase}) => { 
         const firebase = getFirebase();
-
+        
+        const rec = firebaseReducer.auth
         firebase.auth().signOut().then( () => {
             dispatch({
                 type: "SIGN_OUT_SUCCESS"
