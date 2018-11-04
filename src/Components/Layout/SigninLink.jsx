@@ -36,7 +36,7 @@ class SigninLink extends Component {
       }
     render() {
         const userLogged = this.props.auth
-        const signOutBtn = <a to = "/signin" onClick = { () => {this.handleLogOut(userLogged)}}>Sign Out</a>
+        const signOutBtn = <NavLink to = "/signin" onClick = { () => {this.handleLogOut(userLogged)}}>Sign Out</NavLink>
         // const avatarBtn =<Avatar googleID={this.props.auth.providerData["0"].uid} size = {40} round = {true}/>
         const dropDownButton = (
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -48,7 +48,6 @@ class SigninLink extends Component {
                     <DropdownItem header>Header</DropdownItem>
                     <DropdownItem disabled>Action</DropdownItem>
                     <DropdownItem>Profile</DropdownItem>
-                    <DropdownItem divider />
                     <DropdownItem>{signOutBtn}</DropdownItem>
                     </DropdownMenu>
             </Dropdown>
@@ -56,7 +55,7 @@ class SigninLink extends Component {
         return (
             <Container>
         <ul className = "right">
-            <li> <NavLink to = "/chat"><Button color="info">Chat</Button></NavLink> </li>
+            <li> <a href = "/chat"><Button color="info">Chat</Button></a> </li>
             <li> {dropDownButton}</li>
         </ul>
         </Container>

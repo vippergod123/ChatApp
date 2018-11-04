@@ -13,14 +13,16 @@ class Dashboard extends Component {
         super(props);
         this.state = { 
             friends:[],
-            isLoaded:false
+            isLoaded:false,
+            isLogged: false
         }
     }
     
     componentWillReceiveProps(){
         this.setState({
             friends:this.props.friends? this.props.friends:[],
-            isLoaded : isEmpty(this.props.friends)? false:true
+            isLoaded : isEmpty(this.props.friends)? false:true,
+            isLogged: this.props.auth.uid? true:false
         }) 
     }
     
@@ -64,7 +66,7 @@ class Dashboard extends Component {
             </div>
             
         )}
-        else  { 
+        else if ( this.state.isLoaded === false)  { 
             return (
                 <div className = "container">
                 <br/>
@@ -72,6 +74,14 @@ class Dashboard extends Component {
                 <LoadingSpinner/>
                 </div>
         )}
+        else if ( this.state.isLogged === false )  { 
+            return (
+                <div className = "container">
+                <br/>
+                <h1 className="center"> Login to talk with friends</h1>
+                </div>
+        )}
+        
         
     }
 }
