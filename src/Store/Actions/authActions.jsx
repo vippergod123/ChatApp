@@ -49,12 +49,11 @@ export const signInWithGoogle = (credentials) => {
 export const signOut = () => { 
     return (dispatch, getState, {getFirebase}) => { 
         const firebase = getFirebase();
-        
-        const rec = firebaseReducer.auth
+         
         firebase.auth().signOut().then( () => {
             dispatch({
                 type: "SIGN_OUT_SUCCESS"
             })
         })
-    }
+    }  
 }

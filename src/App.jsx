@@ -9,6 +9,8 @@ import Dashboard from './Components/Dashboard/Dashboard'
 
 
 class App extends Component {
+    
+  
     render() {
         return (
             <BrowserRouter >
@@ -18,8 +20,7 @@ class App extends Component {
                         <Route exact path = "/" component = {Dashboard}/>
                         <Route path = "/dashboard" component = {Dashboard} />
         
-                        <Route path = "/chat" component = {ChatFrame}/>
-                        <Route path = "/chat/:id" component = {ChatFrame}/>
+                        <Route key="chat" path = "/chat/:id" component = {ChatFrame}/>
         
                         <Route path = "/signin" component = {Signin}/>
                         <Route path = "/signup" component = {Signup}/>

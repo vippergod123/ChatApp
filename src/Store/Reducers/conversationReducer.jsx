@@ -16,6 +16,15 @@ const userDatabaseReducer = (state = initState, action) => {
         case "GET_CONVERSATION_ERROR":
             console.log('GET_CONVERSATION_ERROR', action.err);
             return state;
+        
+        ////
+        ////            
+        case "SEND_MESSAGE_SUCCESS":
+            console.log('SEND_MESSAGE_SUCCESS');
+            return action.conversation;
+        case "SEND_MESSAGE_ERROR":
+            console.log('SEND_MESSAGE_ERROR', action.err);
+            return state;
 
 
         default:

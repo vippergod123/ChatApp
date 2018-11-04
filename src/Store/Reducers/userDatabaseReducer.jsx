@@ -32,11 +32,15 @@ const userDatabaseReducer = (state = initState, action) => {
             return state;
         case "SET_USER_OFFLINE_ERROR":
             console.log('SET_USER_OFFLINE_ERROR', action.err);
-            return state; 
-            
+            return state;   
         //
         //
-
+        case "SET_PRIORITY_FRIEND":
+            console.log('SET_PRIORITY_FRIEND');
+            return state;
+        case "SET_PRIORITY_FRIEND_ERROR":
+            console.log('SET_PRIORITY_FRIEND_ERROR', action.err);
+            return state;  
 
         default:
             return state

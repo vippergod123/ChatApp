@@ -44,7 +44,8 @@ class ListFriends extends Component {
     handleClick = (userLogged,userClicked) => { 
         this.props.getConversation(userLogged.uid,userClicked.uid)
         this.props.history.replace("../chat/"+userClicked.uid);
-
+        console.log(this.props.conversation);
+        
     }
 
     render() {
@@ -124,7 +125,8 @@ const mapStateToProps = (state) => {
     return { 
         auth: state.firebase.auth,
         friends: state.friends,
-        users: state.users
+        users: state.users,
+        conversation: state.conversation
     }
 }
 

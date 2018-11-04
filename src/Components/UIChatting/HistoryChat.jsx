@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 
+//Router
+import {withRouter} from 'react-router-dom'
 //Action
-import {createConversation} from '../../Store/Actions/conversationActions'
+import {createConversation,sendMessage} from '../../Store/Actions/conversationActions'
 
 //Firebase
 import {connect} from 'react-redux'
 import {getFirebase, isEmpty} from 'react-redux-firebase'
-import {compose} from 'redux'
+
 
 //Plugin
 import LoadingSpinner from '../Plugin/LoadingSpinner'
@@ -17,27 +19,87 @@ class HistoryChat extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { 
+        conversation: {},
+        userLogged: {},
+        isLoaded: false,
+        idParams: this.props.match.params.id
+    }
   }
   
   
-  componentDidMount() { 
+  componentWillReceiveProps() { 
+      this.setState({
+        userLogged: this.props.auth,
+        conversation:this.props.conversation,
+        isLoaded: true
+      })
+  }
+
+
+  handleSendMessage (e) {
+    e.preventDefault();
+    const term = this.refs.tags.value;
+    this.setState({
+      text: term
+    })
+    this.refs.tags.value = ""
+    const usersChat = this.props.conversation.users
+    console.log(usersChat);
+    var message = this.props.conversation.history
     
+    var date = new Date(); // some mock date
+    var lastMilliseconds = date.getTime();
+    
+    message.push( {
+      sendAt: lastMilliseconds,
+      uid: this.props.auth.uid,
+      text: term,
+    })
+    
+    this.props.sendMessage(usersChat[0].uid,usersChat[1].uid,message)
   } 
+
+  handleSendMessageByEnter(e) { 
+      var key = window.event.keyCode
+      if (key === 13) {
+          this.handleSendMessage(e)
+      }
+      
+  }
+
+  handleCreateConversation(authUID,paramsUID) { 
+    this.props.createConversation(authUID,paramsUID)
+  }
 
   render() {
       const userLogged = this.props.auth
       const cons = this.props.conversation
 
       console.log(cons);
-    
-      if(isEmpty(cons)) { 
-        return (
-          <div className = "card-action grey lighten-4 grey-text center flow-text">Click A Friend on the left that you want to talk to !! </div>
-        )
+      console.log(this.state.isLoaded);
+      
+      
+      if(isEmpty(cons)) {
+          const idParams = this.state.idParams
+          
+          
+            if (idParams !== "t" && userLogged.uid && this.state.isLoaded === true) { 
+              console.log("ASDKOQWIEQOWEIOQWIEOW");
+              return (
+                <a onClick ={ () => this.handleCreateConversation(userLogged.uid,idParams)}><div className = "card-action grey lighten-4 grey-text center flow-text">Both of you dont have any conversation yet! Click here to make connection </div></a>
+                ) 
+              // this.props.createConversation(userLogged.uid,idParams)
+            }
+            return (
+              <div className = "card-action grey lighten-4 grey-text center flow-text">Click avatar on the left to start a conversation </div>
+              ) 
+        
       } else {
+        console.log(cons);
+        
+
         cons.history.map ( each => { 
-          
-          
           if ( each.uid === userLogged.uid) { 
             each.position = "right"
             each.displayName = userLogged.displayName
@@ -51,52 +113,57 @@ class HistoryChat extends Component {
         // this.props.createConversation(userLogged.uid,"16wQ8bCKeGYNiYgBUMjhuP4LFKT2")
         
       return (
-        
-    <div className="chat-history">
-      <ul>
-        {cons.history.map((each,index) => {
-            if(each.position === "right") { 
-              return (
-              /* My message */
-                    <li className="clearfix" key = {index}>
+      <div>
+          <div className="chat-history">
+            <ul>
+              {cons.history.map((each,index) => {
 
-                        
-                        <div className="message-data align-right">
-                        
-                          <span className="message-data-time" >{each.sendAt}</span> &nbsp; &nbsp;
-                          <span className="message-data-name" >{each.displayName}</span> <i className="fa fa-circle me"></i>
+                  const sec = parseInt(each.sendAt)
+                  const date = moment(new Date(sec)).format('l') + " - "  +moment(new Date(sec)).format('LT')
                 
-                        </div>
-                        <div className="message other-message right ">
-                            <div className = "right"> {each.text}</div>
-                        </div>
-                      </li>
-              )
-            }
+                  if(each.position === "right") { 
+                    return (
+                    /* My message */
+                          <li className="clearfix" key = {index}>
 
-            else  { 
-              return(
+                              
+                              <div className="message-data align-right">
+                              
+                                <span className="message-data-time" >{date}</span> &nbsp; &nbsp;
+                                <span className="message-data-name" >{each.displayName}</span> <i className="fa fa-circle me"></i>
+                      
+                              </div>
+                              <div className="message other-message right ">
+                                  <div className = "right"> {each.text}</div>
+                              </div>
+                            </li>
+                    )
+                  }
 
-                ///Friend Message
-                      <li key = {index}>
-                        <div className="message-data">
-                            <span className="message-data-name left"><i className="fa fa-circle online"></i> {each.displayName}</span>
-                            <span className="message-data-time">{each.sendAt}</span>
+                  else  { 
+                    return(
 
-                        </div>
-                        <div className="message my-message left">
-                              {each.text}
-                        </div>
-                      </li>
-              )
-            }
-        })}
-        
-   
-      </ul>
-      
+                      ///Friend Message
+                            <li key = {index}>
+                              <div className="message-data">
+                                  <span className="message-data-name left"><i className="fa fa-circle online"></i> {each.displayName}</span>
+                                  <span className="message-data-time">{date}</span>
+
+                              </div>
+                              <div className="message my-message left">
+                                    {each.text}
+                              </div>
+                            </li>
+                    )
+                  }
+              })}
+            </ul>  
+          </div>
+          <div className="chat-message clearfix">
+              <textarea name="message-to-send" onKeyPress= {this.handleSendMessageByEnter.bind(this)} id="message-to-send" placeholder="Type your message" rows="3" name = "tag" ref= "tags"></textarea>
+              <button onClick = {this.handleSendMessage.bind(this)}>Send</button>   
+          </div>
     </div>
-
       );
       }
   }
@@ -115,9 +182,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => { 
   return { 
     createConversation: (authUID,paramUID) => dispatch(createConversation(authUID,paramUID)),
-
+    sendMessage: (authUID,paramUID,text) => dispatch(sendMessage(authUID,paramUID,text)),
   }
 }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(HistoryChat);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(HistoryChat))

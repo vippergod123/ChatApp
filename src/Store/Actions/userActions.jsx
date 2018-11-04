@@ -71,45 +71,28 @@ export const getUserFromFireStore = () => {
 
 
 
-export const setUserOnline = () => { 
+export const setUserOnline = (userAuth) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
-        // firebase.database().ref('Friends/' + user.uid ).update({
-            
-        //     status:'online',
-        //     displayName: user.displayName,
-        //     uid: user.uid,
-        //     photoURL: user.photoURL,
-        // }).then( () => { 
-        //     dispatch({ 
-        //         type: "SET_USER_ONLINE_SUCCESS",
-        //     })
-        // }).catch( err => { 
-        //     dispatch({ 
-        //         type: "SET_USER_ONLINE_ERROR",
-        //         err: err,
-        //     })
-        // });
 
-
-        firebase.database().ref('/Friends/5jI3uuJKljbLFFtpayeN54KW5To2/users')
-                            .orderByChild('uid')
-                            .equalTo("DkdFDBMy11N02NqEhuuK60wJs8t2")
-                            .on("value", function(snapshot) {
-                                
-                                console.log(snapshot.val());
-                                snapshot.forEach(function(data) {
-                                data.ref.update({ 
-                                    status: "online",
-                                    priority: true 
-                                })
-                                dispatch({ 
-                                type: "SET_USER_ONLINE_SUCCESS",
-
-                    })
-            });
-        });
         
+
+        firebase.database().ref('Friends/' + userAuth.uid ).update({
+            
+            status:'online',
+            displayName: userAuth.displayName,
+            uid: userAuth.uid,
+            photoURL: userAuth.photoURL,
+        }).then( () => { 
+            dispatch({ 
+                type: "SET_USER_ONLINE_SUCCESS",
+            })
+        }).catch( err => { 
+            dispatch({ 
+                type: "SET_USER_ONLINE_ERROR",
+                err: err,
+            })
+        });
     }
 }
 
@@ -118,11 +101,11 @@ export const setUserOffline = (user) => {
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
 
-       
+        var date = new Date(); // some mock date
+        var lastMilliseconds = date.getTime();
 
-        
         firebase.database().ref('Friends/' + user.uid).update({
-            lastLoginAt: user.lastLoginAt,
+            lastLoginAt: lastMilliseconds,
             status:'offline',
             
         }).then( () => { 
@@ -138,3 +121,26 @@ export const setUserOffline = (user) => {
     }
 }
 
+
+export const setPriorityFriend = (user) => { 
+    return (dispatch,getState, {getFirebase, getFirestore}) => { 
+        const firebase = getFirebase();
+
+        var date = new Date(); // some mock date
+        var lastMilliseconds = date.getTime();
+
+        firebase.database().ref('Friends/' + user.uid).update({
+            priority: !user.priority
+            
+        }).then( () => { 
+            dispatch({ 
+                type: "SET_PRIORITY_FRIEND",
+            })
+        }).catch( err => { 
+            dispatch({ 
+                type: "SET_PRIORITY_FRIEND_ERROR",
+                err: err,
+            })
+        });
+    }
+}

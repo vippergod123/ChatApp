@@ -16,14 +16,14 @@ import {compose} from 'redux'
 
 class Navbar extends Component {
 
-    componentDidMount() { 
-        this.props.getUserFromFireStore()
-    }
-
-    componentWillReceiveProps() { 
-        
-    }
   
+    componentDidMount() {
+        this.props.getUserFromFireStore()
+        
+        
+        
+      }
+      
     render() {
         const userLogged = this.props.auth
         const links = userLogged.uid ?  <SigninLink />: <SignoutLink/>

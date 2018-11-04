@@ -8,8 +8,26 @@ import { isEmpty } from 'react-redux-firebase';
 
 
 class MessageChat extends Component {
-    componentWillReceiveProps() { 
-       
+   constructor(props) {
+       super(props);
+       this.setState = { 
+           message:[]
+       }
+   }
+   
+
+    handleSendMessage (e) {
+        e.preventDefault();
+        const term = this.refs.tags.value;
+        console.log(term);
+        this.refs.tags.value = ""
+    }
+
+    handleSendMessageByEnter(e) { 
+        var key = window.event.keyCode
+        if (key === 13) {
+            this.handleSendMessage(e)
+        }
         
     }
 
@@ -24,9 +42,10 @@ class MessageChat extends Component {
 
         return (
             <div className="chat-message clearfix">
-                <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
-                <button>Send</button>
-
+                <textarea name="message-to-send" onKeyPress= {this.handleSendMessageByEnter.bind(this)} id="message-to-send" placeholder="Type your message" rows="3" name = "tag" ref= "tags"></textarea>
+                <button onClick = {this.handleSendMessage.bind(this)}>Send</button>
+                
+                
             </div>
         );
     }
@@ -35,7 +54,8 @@ class MessageChat extends Component {
 const mapStateToProps = (state) => { 
     return {
         auth: state.firebase.auth,
-        users: state.users
+        users: state.users,
+        conversation: state.conversation
     }
 }
 

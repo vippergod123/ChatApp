@@ -26,7 +26,7 @@ class ChatFrame extends Component {
             <div className="chat">
                 <HeaderChat/>
                 <HistoryChat/>
-                <MessageChat/>
+                {/* <MessageChat/> */}
             </div>
             </div>
             

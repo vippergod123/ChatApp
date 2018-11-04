@@ -23,6 +23,7 @@ class SigninLink extends Component {
         };
       }
     
+     
       toggle() {
         this.setState({
           dropdownOpen: !this.state.dropdownOpen
@@ -55,7 +56,7 @@ class SigninLink extends Component {
         return (
             <Container>
         <ul className = "right">
-            <li> <a href = "/chat"><Button color="info">Chat</Button></a> </li>
+            <li> <a href = "/chat/t"><Button color="info">Chat</Button></a> </li>
             <li> {dropDownButton}</li>
         </ul>
         </Container>

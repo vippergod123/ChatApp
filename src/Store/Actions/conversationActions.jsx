@@ -19,45 +19,21 @@ export const createConversation = (authUID,paramUID) => {
         const firebase = getFirebase();
         const hashID = hashConversationID(authUID,paramUID)
 
+        var date = new Date(); // some mock date
+        var createMilisecond = date.getTime();
+
         firebase.database().ref('conversation/' + hashID ).update({
             
             users:[
                 {uid:authUID},
                 {uid:paramUID}
             ],
-            timeCreatedAt: new Date(),
-            history: [
-                {
-                    sendAt: "12h30",
-                    uid: authUID,
-                    text: "hello there",
-                },
-                {
-                    sendAt: "12h31",
-                    uid: paramUID,
-                    text: "what's ur name ?",
-                },
-                {
-                    sendAt: "12h35",
-                    uid: authUID,
-                    text: "Duy",
-                },
-                {
-                    sendAt: "12h30",
-                    uid: authUID,
-                    text: "And you?",
-                },
-                {
-                    sendAt: "12h31",
-                    uid: paramUID,
-                    text: "Xyz, nice to meet you",
-                },
-                {
-                    sendAt: "12h35",
-                    uid: authUID,
-                    text: "yeah right! Me tooo ",
-                }
-            ]
+            timeCreatedAt: createMilisecond,
+            history: [{
+                sendAt: createMilisecond,
+                text: "Hello !",
+                uid: paramUID
+            }]
         }).then( () => { 
             dispatch({ 
                 type: "CREAT_CONVERSATION_SUCCESS",
@@ -91,3 +67,29 @@ export const getConversation = (authUID,paramUID) => {
 }
 
 
+
+export const sendMessage = (authUID,paramUID,message) => { 
+   
+    
+    return (dispatch,getState, {getFirebase, getFirestore}) => { 
+        const firebase = getFirebase();
+        const hashID = hashConversationID(authUID,paramUID)
+        var date = new Date(); // some mock date
+        var lastMilliseconds = date.getTime();
+
+        firebase.database().ref('conversation/' + hashID + "" ).update({
+            history: message,
+            lastMessageAt: lastMilliseconds
+        }).then( () => { 
+            dispatch({ 
+                type: "SEND_MESSAGE_SUCCESS",
+            })
+        }).catch( err => { 
+            dispatch({ 
+                type: "SEND_MESSAGE_ERROR",
+                err: err,
+            })
+        });
+        
+    }
+}
