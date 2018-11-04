@@ -67,7 +67,20 @@ class ListFriends extends Component {
             )
         }
         else {
+            friends = friends.filter(function( obj ) {
+                return obj.uid !== userLogged.uid ;
+            });
 
+            friends.sort((a,b) => { 
+                if (a.status > b.status)
+                    return -1;
+                if (a.status < b.status)
+                    return 1;
+                return (a.priority === b.priority)? 0 : a.priority? -1 : 1;
+                
+            })
+
+            
             return (
                     <div className="people-list" id="people-list">
                     <div className="search">

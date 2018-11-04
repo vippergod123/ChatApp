@@ -13,7 +13,8 @@ export const createUser = (user) => {
                 })
             })
                 const index = getListUser.findIndex( each => each.user.uid === user.uid)
-
+                console.log(index);
+                
                 if ( index === -1 ) { 
                     firestore.collection("users").add({ 
                         ...user,
@@ -70,7 +71,7 @@ export const getUserFromFireStore = () => {
 
 
 
-export const setUserOnline = (user) => { 
+export const setUserOnline = () => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
         // firebase.database().ref('Friends/' + user.uid ).update({
@@ -91,12 +92,23 @@ export const setUserOnline = (user) => {
         // });
 
 
-        // firebase.database().ref('/Friends/5jI3uuJKljbLFFtpayeN54KW5To2/users').orderByChild('uid').equalTo("DkdFDBMy11N02NqEhuuK60wJs8t2").on("value", function(snapshot) {
-        //     console.log(snapshot.val());
-        //     snapshot.forEach(function(data) {
-        //         data.ref.update({ status: "offline" })
-        //     });
-        // });
+        firebase.database().ref('/Friends/5jI3uuJKljbLFFtpayeN54KW5To2/users')
+                            .orderByChild('uid')
+                            .equalTo("DkdFDBMy11N02NqEhuuK60wJs8t2")
+                            .on("value", function(snapshot) {
+                                
+                                console.log(snapshot.val());
+                                snapshot.forEach(function(data) {
+                                data.ref.update({ 
+                                    status: "online",
+                                    priority: true 
+                                })
+                                dispatch({ 
+                                type: "SET_USER_ONLINE_SUCCESS",
+
+                    })
+            });
+        });
         
     }
 }

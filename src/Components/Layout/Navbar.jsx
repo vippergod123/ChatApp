@@ -7,6 +7,7 @@ import SignoutLink from './SignoutLink';
 //Action
 import {createUser, getUserFromFireStore,setUserOnline} from '../../Store/Actions/userActions'
 import {getFriends} from '../../Store/Actions/friendsActions'
+
 //
 import {connect} from 'react-redux'
 import {firestoreConnect} from 'react-redux-firebase'
@@ -18,6 +19,10 @@ class Navbar extends Component {
     componentDidMount() { 
         this.props.getUserFromFireStore()
     }
+
+    componentWillReceiveProps() { 
+        
+    }
   
     render() {
         const userLogged = this.props.auth
@@ -28,7 +33,7 @@ class Navbar extends Component {
         if (userLogged.uid) { 
             this.props.createUser(userLogged)
             this.props.setUserOnline(userLogged)
-            this.props.getFriends(userLogged)
+            this.props.getFriends()
         }
         else { 
 
@@ -59,7 +64,7 @@ const mapDispatchToProps = (dispatch) => {
         createUser: (user) => dispatch(createUser(user)),
         getUserFromFireStore: () => dispatch(getUserFromFireStore()),
         setUserOnline: (user) => dispatch(setUserOnline(user)),
-        getFriends: (userLogged) => dispatch(getFriends(userLogged)),
+        getFriends: () => dispatch(getFriends()),
     }
 }
 

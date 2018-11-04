@@ -1,25 +1,16 @@
-export const makeFriends = (authUser, listUser) => { 
+export const makeFriends = (authUser) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
 
-        listUser = listUser.filter(function( obj ) {
-            return obj.user.uid !== authUser.uid ;
-        });
 
-        var friends = []
-        listUser.map(each=> { 
-            friends.push({
-                status:'online',
-                displayName: each.user.displayName,
-                uid: each.user.uid,
-                photoURL: each.user.photoURL,
-            })
-        })
-
+        var date = new Date(); // some mock date
+        var lastMilliseconds = date.getTime();
         
         firebase.database().ref('Friends/' + authUser.uid ).update({
-        
-            users: friends
+            displayName: authUser.displayName,
+            uid: authUser.uid,
+            photoURL: authUser.photoURL,
+            lastLoginAt: lastMilliseconds,
         }).then( () => { 
             dispatch({ 
                 type: "MAKE_FRIENDS_SUCCESS",
@@ -30,23 +21,21 @@ export const makeFriends = (authUser, listUser) => {
                 err: err,
             })
         });
-
-        
-  
     }
 }
 
-export const getFriends = (authUID) => { 
+export const getFriends = () => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
         var getListUser = []
-        firebase.database().ref('Friends/' + authUID.uid ).on('value', snap => {
+        firebase.database().ref('Friends/').on('value', snap => {
             var ads = snap.val();
             Object.keys(ads).map(function(objectKey, index) {
                 var value = ads[objectKey];
-                getListUser = value
+                getListUser.push(value)
             })
 
+            console.log(getListUser);
             
             dispatch({
                 type:  "GET_FRIENDS_SUCCESS",

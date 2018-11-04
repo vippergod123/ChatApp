@@ -31,9 +31,7 @@ export const signInWithGoogle = (credentials) => {
         firebase.auth().signInWithPopup(
             provider
         ).then(() => 
-            {   
-               ;
-               
+            {          
             dispatch({
                 type: "LOGIN_GOOGLE_SUCCESS"})
             }).catch((err)=> 
