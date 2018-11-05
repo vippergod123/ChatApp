@@ -26,8 +26,7 @@ class Dashboard extends Component {
         }) 
     }
     
-    handleClickFriends(userLogged,userClicked) { 
-        this.props.getConversation(userLogged.uid,userClicked.uid)
+    handleClickFriends(userClicked) { 
         this.props.history.replace("../chat/"+userClicked.uid);
     }
 

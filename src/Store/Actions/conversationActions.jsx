@@ -3,21 +3,21 @@ function hashConversationID(a,b) {
     var hashA = 0
     var hashB = 0
     for (var i = 0; i<a.length; i++){
-        var temp = a.charCodeAt(i)
-        hashA +=  temp
+        var tempA = a.charCodeAt(i)
+        hashA +=  tempA
     }
 
-    for (var i = 0; i<b.length; i++){
-        var temp = b.charCodeAt(i)
-        hashB +=  temp
+    for (var j = 0; j<b.length; j++){
+        var tempB = b.charCodeAt(j)
+        hashB +=  tempB
     }
     return hashA+hashB
 }
 
-export const createConversation = (authUID,paramUID) => { 
+export const createConversation = (authUser,userClicked) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
-        const hashID = hashConversationID(authUID,paramUID)
+        const hashID = hashConversationID(authUser.uid,userClicked.uid)
 
         var date = new Date(); // some mock date
         var createMilisecond = date.getTime();
@@ -25,14 +25,14 @@ export const createConversation = (authUID,paramUID) => {
         firebase.database().ref('conversation/' + hashID ).update({
             
             users:[
-                {uid:authUID},
-                {uid:paramUID}
+                {user: authUser},
+                {user:  userClicked}
             ],
             timeCreatedAt: createMilisecond,
             history: [{
                 sendAt: createMilisecond,
                 text: "Hello !",
-                uid: paramUID
+                uid: authUser.uid
             }]
         }).then( () => { 
             dispatch({ 
@@ -50,16 +50,17 @@ export const createConversation = (authUID,paramUID) => {
 
 
 
-export const getConversation = (authUID,paramUID) => { 
+export const getConversation = (authUser,userClicked) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
-        const hashID = hashConversationID(authUID,paramUID)
+        const hashID = hashConversationID(authUser.uid,userClicked.uid)
         
         firebase.database().ref('conversation/' + hashID ).on('value', snap => {
             var conversation = snap.val();
             dispatch({
                 type: "GET_CONVERSATION_SUCCESS",
-                conversation:conversation
+                conversation:conversation,
+                userClicked: userClicked
             })
         })
         
@@ -68,12 +69,12 @@ export const getConversation = (authUID,paramUID) => {
 
 
 
-export const sendMessage = (authUID,paramUID,message) => { 
+export const sendMessage = (authUser,userClicked,message) => { 
    
     
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
-        const hashID = hashConversationID(authUID,paramUID)
+        const hashID = hashConversationID(authUser.uid,userClicked.uid)
         var date = new Date(); // some mock date
         var lastMilliseconds = date.getTime();
 

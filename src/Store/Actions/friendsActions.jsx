@@ -30,12 +30,10 @@ export const getFriends = () => {
         var getListUser = []
         firebase.database().ref('Friends/').on('value', snap => {
             var ads = snap.val();
-            Object.keys(ads).map(function(objectKey, index) {
+            Object.keys(ads).map((objectKey, index) => {
                 var value = ads[objectKey];
                 getListUser.push(value)
             })
-
-            console.log(getListUser);
             
             dispatch({
                 type:  "GET_FRIENDS_SUCCESS",

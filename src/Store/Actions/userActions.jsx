@@ -56,9 +56,6 @@ export const getUserFromFireStore = () => {
                 getListUser: getListUser,
             })
   
-            getListUser.map(each => { 
-                 
-            })
         }).catch( (err) => { 
             dispatch({
                 type: "GET_USER_STORE_ERROR",
@@ -125,9 +122,6 @@ export const setUserOffline = (user) => {
 export const setPriorityFriend = (user) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
-
-        var date = new Date(); // some mock date
-        var lastMilliseconds = date.getTime();
 
         firebase.database().ref('Friends/' + user.uid).update({
             priority: !user.priority

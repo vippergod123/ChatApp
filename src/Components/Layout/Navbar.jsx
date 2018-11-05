@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+
+//Component
 import SigninLink from './SigninLink';
 import SignoutLink from './SignoutLink';
-
 
 //Action
 import {createUser, getUserFromFireStore,setUserOnline} from '../../Store/Actions/userActions'
@@ -27,8 +27,6 @@ class Navbar extends Component {
     render() {
         const userLogged = this.props.auth
         const links = userLogged.uid ?  <SigninLink />: <SignoutLink/>
-        const userList = this.props.users
-        
         
         if (userLogged.uid) { 
             this.props.createUser(userLogged)

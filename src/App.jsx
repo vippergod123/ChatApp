@@ -5,7 +5,7 @@ import ChatFrame from './Components/UIChatting/ChatFrame'
 
 import Signin from './Components/Auth/Signin'
 import Signup from './Components/Auth/Signup'
-import Dashboard from './Components/Dashboard/Dashboard'
+
 
 
 class App extends Component {
@@ -16,12 +16,10 @@ class App extends Component {
             <BrowserRouter >
                 <div className = "App">
                     <Navbar/>
-                    <Switch>
-                        <Route exact path = "/" component = {Dashboard}/>
-                        <Route path = "/dashboard" component = {Dashboard} />
-        
-                        <Route key="chat" path = "/chat/:id" component = {ChatFrame}/>
-        
+                    <Switch>        
+                        <Route exact path = "/" component = {ChatFrame}/>
+                        <Route path = "/chat/:id" component = {ChatFrame}/>
+
                         <Route path = "/signin" component = {Signin}/>
                         <Route path = "/signup" component = {Signup}/>
                     </Switch>

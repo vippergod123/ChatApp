@@ -5,7 +5,7 @@ import {signIn, signInWithGoogle} from '../../Store/Actions/authActions'
 import GoogleButton from 'react-google-button'
 import  {withRouter} from 'react-router-dom'
 
-import {firebaseReducer} from 'react-redux-firebase'
+
 
 
 class Signin extends Component {

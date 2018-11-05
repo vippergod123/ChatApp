@@ -14,7 +14,7 @@ const userDatabaseReducer = (state = initState, action) => {
             console.log('GET_USER_STORE_SUCCESS');
             console.log(action.getListUser);
             return action.getListUser
-        case "CREATE_USER_ERROR":
+        case "GET_USER_STORE_ERROR":
             console.log('GET_USER_STORE_ERROR', action.err);
             return state;
         ////

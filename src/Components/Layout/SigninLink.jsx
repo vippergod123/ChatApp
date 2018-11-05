@@ -7,8 +7,6 @@ import {connect} from "react-redux"
 import {setUserOffline} from '../../Store/Actions/userActions'
 import {signOut} from '../../Store/Actions/authActions'
 
-
-import Avatar from 'react-avatar';
 import {Container} from 'reactstrap'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -56,7 +54,7 @@ class SigninLink extends Component {
         return (
             <Container>
         <ul className = "right">
-            <li> <a href = "/chat/t"><Button color="info">Chat</Button></a> </li>
+            <li> <a href = "/"><Button color="info">Chat</Button></a> </li>
             <li> {dropDownButton}</li>
         </ul>
         </Container>

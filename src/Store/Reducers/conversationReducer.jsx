@@ -1,5 +1,5 @@
 const initState = {}
-const userDatabaseReducer = (state = initState, action) => { 
+const conversationReducers = (state = initState, action) => { 
     switch( action.type ) { 
         ////
         case "CREAT_CONVERSATION_SUCCESS":
@@ -12,7 +12,11 @@ const userDatabaseReducer = (state = initState, action) => {
         ////            
         case "GET_CONVERSATION_SUCCESS":
             console.log('GET_CONVERSATION_SUCCESS');
-            return action.conversation;
+            return {
+                conversation: action.conversation,
+                userClicked: action.userClicked
+            }
+                
         case "GET_CONVERSATION_ERROR":
             console.log('GET_CONVERSATION_ERROR', action.err);
             return state;
@@ -33,4 +37,4 @@ const userDatabaseReducer = (state = initState, action) => {
     
 }
 
-export default userDatabaseReducer
+export default conversationReducers
