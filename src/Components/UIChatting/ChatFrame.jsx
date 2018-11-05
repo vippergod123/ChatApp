@@ -74,8 +74,11 @@ class ChatFrame extends Component {
         
         if (!userLogged.uid){ 
             return (
+                <div>
+                    <div className = "flow-text center"> <br/> Login to make great contact with friends </div>
+                    <div className = "center"> <br/> Signout by Click Button to definitely  sign out </div>
+                </div>
                 
-                <div className = "flow-text center"> <br/> Login to make great contact with friends </div>
             )
         }
         else if ( userLogged && users && friends ) {

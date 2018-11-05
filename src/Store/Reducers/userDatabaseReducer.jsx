@@ -3,10 +3,10 @@ const userDatabaseReducer = (state = initState, action) => {
     switch( action.type ) { 
         ////
         case "CREATE_USER":
-            console.log('Create USER success');
+            console.log('CREATE_USER');
             return state;
         case "CREATE_USER_ERROR":
-            console.log('Create USER error', action.err);
+            console.log('CREATE_USER_ERROR', action.err);
             return state;
         ////
         ////            

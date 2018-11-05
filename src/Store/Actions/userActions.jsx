@@ -5,33 +5,17 @@ export const createUser = (user) => {
         const firestore = getFirestore();
         const getListUser = []
         
-    
-        firestore.collection('users').get().then( snap => { 
-            snap.forEach( doc=> { 
-                getListUser.push({
-                    user: doc.data()
-                })
-            })
-                const index = getListUser.findIndex( each => each.user.uid === user.uid)
-                console.log(index);
-                
-                if ( index === -1 ) { 
-                    firestore.collection("users").add({ 
-                        ...user,
-                    }).then( () =>  { 
-                        dispatch({
-                            type: "CREATE_USER",
-                        });
-                    }).catch((err) => {
-                        dispatch({
-                            type: "CREATE_USER_ERROR",
-                            err: err,
-                        });
-                    })
-                }
-                else {
-                   
-                }
+        firestore.collection('users').doc(user.uid).set({                    
+            ...user,
+        }).then( () =>  { 
+            dispatch({
+                type: "CREATE_USER",
+            });
+        }).catch((err) => {
+            dispatch({
+                type: "CREATE_USER_ERROR",
+                err: err,
+            });
         })
     }
 }
