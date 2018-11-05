@@ -74,11 +74,12 @@ const ListFriend = ({friends, userLogged, onClick}) => {
                             
                             <ReactAvatar size="70"  src={each.photoURL}  className ="left" round = {true}/>
                             <div className="about">
-                                {each.priority === true ?<div className="name white-text">{each.displayName}<i className="fa fa-star online right"></i></div>
+                                {each.priority === true ?
+                                <div className="name white-text">{each.displayName}<i className="fa fa-star online right"></i></div>
                                 :<div className="name white-text">{each.displayName}</div>}
 
                                 <div className="status">
-                                {each.status === "online"? <div><i className="fa fa-circle online"></i>{each.status}</div> : <div><i className="fa fa-circle offline"></i>{moment(date).fromNow()}</div>}
+                                {each.status === "online"? <div>{each.status} <i className="fa fa-circle online"></i> </div> : <div> offline: {moment(date).fromNow() } <i className="fa fa-circle offline"></i></div>}
 
                                 </div>
                             </div>
