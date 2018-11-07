@@ -51,7 +51,7 @@ class Signin extends Component {
                      <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange= {this.handleChange}/>
                      </div>
                    <div className="form-group">
-                     <label for="exampleInputPassword1">Password</label>
+                     <label htmlFor="exampleInputPassword1">Password</label>
                      <input type="password" className="form-control" name="password" id="password" placeholder="Password" onChange= {this.handleChange}/>
                    </div>
                    <div className="form-check">

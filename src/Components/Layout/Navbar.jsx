@@ -5,37 +5,41 @@ import SigninLink from './SigninLink';
 import SignoutLink from './SignoutLink';
 
 //Action
-import {createUser, getUserFromFireStore,setUserOnline} from '../../Store/Actions/userActions'
-import {getFriends} from '../../Store/Actions/friendsActions'
+import {createUser,setUserOnline} from '../../Store/Actions/userActions'
 
 //
 import {connect} from 'react-redux'
-import {firestoreConnect} from 'react-redux-firebase'
+import {firestoreConnect, isLoaded} from 'react-redux-firebase'
 import {compose} from 'redux'
 
 
 class Navbar extends Component {
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoaded: false,
+        }
+    }
+    
   
     componentDidMount() {
-        this.props.getUserFromFireStore()
-        
-        
-        
       }
       
     render() {
         const userLogged = this.props.auth
         const links = userLogged.uid ?  <SigninLink />: <SignoutLink/>
         
-        if (userLogged.uid) { 
+        if (userLogged.uid && this.state.isLoaded === false) { 
             this.props.createUser(userLogged)
             this.props.setUserOnline(userLogged)
-            this.props.getFriends()
+            this.setState({ 
+                isLoaded: true,
+            })
         }
         else { 
 
         }
+        
         return (
             <nav className = "nav-wrapper grey darken-3">
                 <div className = "container">
@@ -52,7 +56,8 @@ class Navbar extends Component {
 const mapStateToProps = (state) => { 
     return { 
         auth: state.firebase.auth,
-        users: state.users
+        users: state.users,
+        fireStore: state.firestore.ordered
     }
 }
 
@@ -60,15 +65,15 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => { 
     return { 
         createUser: (user) => dispatch(createUser(user)),
-        getUserFromFireStore: () => dispatch(getUserFromFireStore()),
         setUserOnline: (user) => dispatch(setUserOnline(user)),
-        getFriends: () => dispatch(getFriends()),
     }
 }
 
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
-    firestoreConnect(['users']),
+    firestoreConnect((props) => [
+        {collection: 'users'},
+    ])
 )(Navbar);
 
 

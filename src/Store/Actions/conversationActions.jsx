@@ -17,52 +17,60 @@ function hashConversationID(a,b) {
 export const createConversation = (authUser,userClicked) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
+        const firestore = getFirestore();
         const hashID = hashConversationID(authUser.uid,userClicked.uid)
 
         var date = new Date(); // some mock date
         var createMilisecond = date.getTime();
 
-        firebase.database().ref('conversation/' + hashID ).update({
+
+        firestore.collection('conversations').doc(hashID.toString()).set({                    
             
             users:[
                 {user: authUser},
                 {user:  userClicked}
             ],
             timeCreatedAt: createMilisecond,
+            lastMessage: 0,
             history: [{
                 sendAt: createMilisecond,
                 text: "Hello !",
                 uid: authUser.uid
             }]
-        }).then( () => { 
-            dispatch({ 
+
+        }).then( () =>  { 
+            dispatch({
                 type: "CREAT_CONVERSATION_SUCCESS",
-            })
-        }).catch( err => { 
-            dispatch({ 
+            });
+        }).catch((err) => {
+            dispatch({
                 type: "CREAT_CONVERSATION_ERROR",
                 err: err,
-            })
-        });
-        
-    }
-}
-
-
-
-export const getConversation = (authUser,userClicked) => { 
-    return (dispatch,getState, {getFirebase, getFirestore}) => { 
-        const firebase = getFirebase();
-        const hashID = hashConversationID(authUser.uid,userClicked.uid)
-        
-        firebase.database().ref('conversation/' + hashID ).on('value', snap => {
-            var conversation = snap.val();
-            dispatch({
-                type: "GET_CONVERSATION_SUCCESS",
-                conversation:conversation,
-                userClicked: userClicked
-            })
+            });
         })
+
+        // firebase.database().ref('conversation/' + hashID ).update({
+            
+        //     users:[
+        //         {user: authUser},
+        //         {user:  userClicked}
+        //     ],
+        //     timeCreatedAt: createMilisecond,
+        //     history: [{
+        //         sendAt: createMilisecond,
+        //         text: "Hello !",
+        //         uid: authUser.uid
+        //     }]
+        // }).then( () => { 
+        //     dispatch({ 
+        //         type: "CREAT_CONVERSATION_SUCCESS",
+        //     })
+        // }).catch( err => { 
+        //     dispatch({ 
+        //         type: "CREAT_CONVERSATION_ERROR",
+        //         err: err,
+        //     })
+        // });
         
     }
 }
@@ -74,23 +82,23 @@ export const sendMessage = (authUser,userClicked,message) => {
     
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
+        const firestore = getFirestore();
+
         const hashID = hashConversationID(authUser.uid,userClicked.uid)
         var date = new Date(); // some mock date
         var lastMilliseconds = date.getTime();
-
-        firebase.database().ref('conversation/' + hashID + "" ).update({
+        firestore.collection('conversations').doc(hashID.toString()).update({                    
             history: message,
             lastMessageAt: lastMilliseconds
-        }).then( () => { 
-            dispatch({ 
+        }).then( () =>  { 
+            dispatch({
                 type: "SEND_MESSAGE_SUCCESS",
-            })
-        }).catch( err => { 
-            dispatch({ 
+            });
+        }).catch((err) => {
+            dispatch({
                 type: "SEND_MESSAGE_ERROR",
                 err: err,
-            })
-        });
-        
+            });
+        })  
     }
 }

@@ -7,6 +7,10 @@ export const createUser = (user) => {
         
         firestore.collection('users').doc(user.uid).set({                    
             ...user,
+            status: "online",
+            priority: false,
+            friends: [],
+            lastLoginAt: null,
         }).then( () =>  { 
             dispatch({
                 type: "CREATE_USER",
@@ -21,104 +25,75 @@ export const createUser = (user) => {
 }
 
 
-export const getUserFromFireStore = () => { 
-    return (dispatch,getState, {getFirebase, getFirestore}) => { 
-        const firestore = getFirestore();
-        const getListUser = []
-
-        
-
-        firestore.collection('users').get().then( snap => { 
-            snap.forEach( doc=> { 
-                getListUser.push({
-                    user: doc.data()
-                })
-            })
-                getListUser.map( each => console.log("ASD"))
-            dispatch({ 
-                type: "GET_USER_STORE_SUCCESS",
-                getListUser: getListUser,
-            })
-  
-        }).catch( (err) => { 
-            dispatch({
-                type: "GET_USER_STORE_ERROR",
-                err: err,
-            });
-        });
-        
-    }
-}
-
-
 
 export const setUserOnline = (userAuth) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firebase = getFirebase();
+        const firestore = getFirestore(); 
 
-        
 
-        firebase.database().ref('Friends/' + userAuth.uid ).update({
-            
-            status:'online',
-            displayName: userAuth.displayName,
-            uid: userAuth.uid,
-            photoURL: userAuth.photoURL,
-        }).then( () => { 
+        firestore.collection('users').doc(userAuth.uid.toString()).update({
+            status: "online",
+        }).then (() =>{ 
             dispatch({ 
                 type: "SET_USER_ONLINE_SUCCESS",
             })
-        }).catch( err => { 
+        }).catch((err) => {
             dispatch({ 
                 type: "SET_USER_ONLINE_ERROR",
                 err: err,
             })
-        });
+        })
+
     }
 }
 
 
-export const setUserOffline = (user) => { 
-    return (dispatch,getState, {getFirebase, getFirestore}) => { 
-        const firebase = getFirebase();
-
+export const setUserOffline = (userAuth) => { 
+    return (dispatch, getState, {getFirebase, getFirestore}) => { 
+        // const firebase = getFirebase();
+        
         var date = new Date(); // some mock date
         var lastMilliseconds = date.getTime();
 
-        firebase.database().ref('Friends/' + user.uid).update({
+        const firestore = getFirestore();
+
+        firestore.collection('users').doc(userAuth.uid.toString()).update({
+            status: "offline",
             lastLoginAt: lastMilliseconds,
-            status:'offline',
-            
-        }).then( () => { 
+        }).then (() =>{ 
             dispatch({ 
                 type: "SET_USER_OFFLINE_SUCCESS",
             })
-        }).catch( err => { 
+        }).catch((err) => {
             dispatch({ 
                 type: "SET_USER_OFFLINE_ERROR",
                 err: err,
             })
-        });
+        })
+
     }
 }
 
 
-export const setPriorityFriend = (user) => { 
+export const setPriorityFriend = (userAuth) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
-        const firebase = getFirebase();
+        // const firebase = getFirebase();
 
-        firebase.database().ref('Friends/' + user.uid).update({
-            priority: !user.priority
-            
-        }).then( () => { 
+        const firestore = getFirestore();
+
+        firestore.collection('users').doc(userAuth.uid.toString()).update({
+            priority: !userAuth.priority,
+        }).then (() =>{ 
             dispatch({ 
-                type: "SET_PRIORITY_FRIEND",
+                type: "SET_USER_OFFLINE_SUCCESS",
             })
-        }).catch( err => { 
+        }).catch((err) => {
             dispatch({ 
-                type: "SET_PRIORITY_FRIEND_ERROR",
+                type: "SET_USER_OFFLINE_ERROR",
                 err: err,
             })
-        });
+        })
+
     }
 }

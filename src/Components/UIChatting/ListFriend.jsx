@@ -19,8 +19,9 @@ var buttonStyle = {
     outline:"none"
 }
 
-const ListFriend = ({friends, userLogged, onClick}) => { 
-    
+const ListFriend = ({userLogged, users, conversations, onClick}) => { 
+    console.log(users);
+    var friends = users;
     if(isEmpty(friends)) { 
         return (
             <div className="people-list" id="people-list">
@@ -54,7 +55,9 @@ const ListFriend = ({friends, userLogged, onClick}) => {
                 return 0
             }
         })
-
+       
+        console.log(friends);
+        
         
         return (
                 <div className="people-list" id="people-list">

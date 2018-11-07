@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { isEmpty } from 'react-redux-firebase';
 import ReactAvatar from 'react-avatar';
 
+
+//Global function 
+import {HashUID} from '../../GlobalFunction/HashFunction'
 function mapStateToProps(state, ownProps) {
     return {
 
@@ -18,10 +21,12 @@ var buttonStyle = {
 }
 
 
-const ChatHeader = ({fetchConversation,onClick}) => { 
+const ChatHeader = ({userLogged, conversations, paramID, users,onClick}) => { 
 
-        const friend = fetchConversation.userClicked
-        const conversation = fetchConversation.conversation
+        var list = users.filter( each=> each.id === paramID) // getListUser match param ID
+        var friend = list[0]
+
+        
         if (isEmpty(friend)) { 
             return (
                 <div className="chat-header clearfix">
@@ -36,6 +41,10 @@ const ChatHeader = ({fetchConversation,onClick}) => {
             );
         }
         else {
+            var hashCode = HashUID(paramID,userLogged.uid); 
+            var listConversation = conversations.filter (each => each.id === hashCode.toString())
+            const conversation = listConversation[0]
+             
             
         return (
             <div className="chat-header clearfix">
