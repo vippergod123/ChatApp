@@ -37,7 +37,7 @@
 .people-list ul {
     padding: 20px;
     height: 706px;
-    overflow-y: scroll;
+    overflow-y: scroll, auto;
     direction: rtl;
 }
 
@@ -256,4 +256,15 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: #99ccff;
+}
+
+label {
+    cursor: pointer;
+    /* Style as you please, it will become the visible UI component. */
+}
+
+#upload-photo {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
 }

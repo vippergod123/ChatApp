@@ -1,14 +1,21 @@
-import { getFirebase, reactReduxFirebase } from 'react-redux-firebase'
+import { getFirebase } from 'react-redux-firebase'
+import { getFirestore } from 'redux-firestore'
 
-export const handleChangeFile = (event) => {
+import { HashUID } from '../../GlobalFunction/HashFunction';
+
+export const handleChangeFile = (event, conversation,userLogged) => {
     const file = event.target.files[0];
     console.log(file);
+
+    var history = conversation.history
+    var users =  conversation.users
+    const hashID = HashUID(users[0].user.uid,users[1].user.uid)
     
     let formData = new FormData();
     formData.append('file', file);
 
     var firebase = getFirebase()
-    var storageRef = firebase.storage().ref('conversations/4001/upload/images/'+file.name);
+    var storageRef = firebase.storage().ref('conversations/'+ hashID.toString() +'/upload/images/');
     var task = storageRef.put(file);
     
     task.on('state_changed', function(snapshot){
@@ -31,9 +38,25 @@ export const handleChangeFile = (event) => {
       }, (downloadURL) => {
         console.log('Upload is SUCCESS');
         task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            console.log('File available at', downloadURL);
-          });
-        
+              console.log('File available at', downloadURL);
+              const firestore = getFirestore();
+
+              
+              var date = new Date(); // some mock date
+              var lastMilliseconds = date.getTime();
+              
+              history.push( {
+                  sendAt: lastMilliseconds,
+                  uid: userLogged.uid,
+                  text: downloadURL,
+              })
+
+              firestore.collection('conversations').doc(hashID.toString()).update({                    
+                  history: history,
+                  lastMessageAt: lastMilliseconds
+              })
+          });        
       });
     //Make a request to server and send formData
 }
+

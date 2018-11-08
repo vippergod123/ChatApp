@@ -16,7 +16,7 @@ function hashConversationID(a,b) {
 
 export const createConversation = (authUser,userClicked) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
-        const firebase = getFirebase();
+        
         const firestore = getFirestore();
         const hashID = hashConversationID(authUser.uid,userClicked.uid)
 
@@ -77,18 +77,26 @@ export const createConversation = (authUser,userClicked) => {
 
 
 
-export const sendMessage = (authUser,userClicked,message) => { 
+export const sendMessage = (conversation,userLogged,message) => { 
    
     
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
-        const firebase = getFirebase();
         const firestore = getFirestore();
 
-        const hashID = hashConversationID(authUser.uid,userClicked.uid)
+        var history = conversation.history
+        var users =  conversation.users
         var date = new Date(); // some mock date
         var lastMilliseconds = date.getTime();
+        
+        history.push( {
+            sendAt: lastMilliseconds,
+            uid: userLogged.uid,
+            text: message,
+        })
+
+        const hashID = hashConversationID(users[0].user.uid,users[1].user.uid)
         firestore.collection('conversations').doc(hashID.toString()).update({                    
-            history: message,
+            history: history,
             lastMessageAt: lastMilliseconds
         }).then( () =>  { 
             dispatch({

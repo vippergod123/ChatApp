@@ -1,10 +1,16 @@
 import React from 'react';
+
+///Function
+import { HashUID } from '../../GlobalFunction/HashFunction';
+
+///
 import { connect } from 'react-redux';
 import { isEmpty } from 'react-redux-firebase';
+
+///Plugin
 import moment from 'moment';
-import LoadingSpinner from '../Plugin/LoadingSpinner';
-import { HashUID } from '../../GlobalFunction/HashFunction';
 import isUrl from "is-url"
+import LightBox from "react-images"
 
 function mapStateToProps(state,ownProps) {
     return {
@@ -29,8 +35,6 @@ var imageStyle ={
   height : "auto",
   maxWidth: "100%",
 }
-
-
 
 const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) => {
 
@@ -70,7 +74,9 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
 
         return (
               <div>
-                  <div className="chat-history">
+                
+                  <div className="chat-history" id = "historyChat">
+                    
                     <ul>
                       {conversation.history.map((each,index) => {
 
@@ -80,7 +86,7 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
                           if(each.position === "right") { 
                             return (
                             /* My message */
-                                  <li className="clearfix" key = {index}>
+                                  <li className="clearfix" key = {index} >
 
                                       <div className="message-data align-right">
                                         <span className="message-data-time" >{date}</span> &nbsp; &nbsp;
@@ -91,9 +97,9 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
                                           
                                           {isUrl(each.text) ?
                                               <div style = {linkImageStyle}>
-                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}>{each.text}</a>
+                                              {(each.text.search("firebasestorage") > 0) ? null  :<a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}>{each.text}</a>}
                                               
-                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}><img style ={imageStyle} src = {each.text}></img> </a>
+                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}><img style ={imageStyle} src = {each.text} alt = {each.text}></img> </a>
                                               </div>
                                               :
                                               <div className = "right"> {each.text}</div> 
@@ -114,19 +120,22 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
                                   </div>
                                   <div className="message my-message left">
                                   {isUrl(each.text) ?
-                                              <div style = {linkImageStyle} >
-                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}>{each.text}</a>
-                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}><img style ={imageStyle} src = {each.text}></img> </a>
-                                              </div>
-                                              :
-                                              <div> {each.text}</div> 
-                                          }
+                                        <div style = {linkImageStyle} >
+                                        {(each.text.search("firebasestorage") > 0) ? null  :<a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}>{each.text}</a>}
+                                        
+                                        <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}><img style ={imageStyle} src = {each.text}  alt = {each.text}></img> </a>
+                                        </div>
+                                        :
+                                        <div> {each.text}</div> 
+                                  }
                                   </div>
                                 </li>
                             )
                           }
                       })}
                     </ul>  
+                    <div id = "history bottom"></div>
+                    
                   </div>
               </div>
         );

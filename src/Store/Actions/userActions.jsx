@@ -3,8 +3,6 @@ export const createUser = (user) => {
     
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
         const firestore = getFirestore();
-        const getListUser = []
-        
         firestore.collection('users').doc(user.uid).set({                    
             ...user,
             status: "online",
@@ -28,9 +26,7 @@ export const createUser = (user) => {
 
 export const setUserOnline = (userAuth) => { 
     return (dispatch,getState, {getFirebase, getFirestore}) => { 
-        const firebase = getFirebase();
         const firestore = getFirestore(); 
-
 
         firestore.collection('users').doc(userAuth.uid.toString()).update({
             status: "online",

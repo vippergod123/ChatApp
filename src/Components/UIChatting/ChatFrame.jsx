@@ -21,8 +21,6 @@ import { uploadImage } from '../../Store/Actions/uploadFileActions';
 //plugin
 import LoadingSpinner from '../Plugin/LoadingSpinner';
 import { HashUID } from '../../GlobalFunction/HashFunction';
-import userDatabaseReducer from '../../Store/Reducers/userDatabaseReducer';
-import { getFirebase, reactReduxFirebase } from 'react-redux-firebase'
 
 //Function 
 import * as func from "./Function"
@@ -31,7 +29,9 @@ class ChatFrame extends Component {
 
     constructor(props) {
         super(props);
-      
+        this.state = {
+            imageUploadURL:null,
+        }
     }
 
     
@@ -39,36 +39,36 @@ class ChatFrame extends Component {
         this.props.history.replace("../chat/"+userClicked.uid);  
     }
 
-    handleSendMessage (conversation,userLogged){
+    handleSendMessage (conversation, userLogged){
         
-        const term = this.refs.tags.value;
+        const  message = this.refs.tags.value;
         this.refs.tags.value = null
         
-        var message = conversation.history
-        var users =  conversation.users
-        var date = new Date(); // some mock date
-        var lastMilliseconds = date.getTime();
         
-        message.push( {
-            sendAt: lastMilliseconds,
-            uid: userLogged.uid,
-            text: term,
-        })
         
-        this.props.sendMessage(users[0].user,users[1].user,message)
+        this.props.sendMessage(conversation, userLogged, message)
     }
 
-    handleSendMessageByEnter(event,fetchConversation,userLogged) { 
+    handleSendMessageByEnter(event,conversation,userLogged) { 
         
         var key = window.event.keyCode
         if (key === 13) {
-            this.handleSendMessage (fetchConversation,userLogged)
+            this.handleSendMessage (conversation, userLogged)
             event.preventDefault();
             event.currentTarget.value = "";
         }
        
     }
 
+
+    componentDidUpdate() { 
+        
+            var elem = document.getElementById('historyChat');
+            if (elem) {
+            elem.scrollTop = elem.scrollHeight;
+            }
+        
+    }
     render() {
         
         const userLogged = this.props.auth
@@ -94,7 +94,6 @@ class ChatFrame extends Component {
             )
         }
         else if ( userLogged ) {
-            
             
             var hashCode = HashUID(paramID,userLogged.uid); 
             var listConversation = conversations.filter (each => each.id === hashCode.toString())
@@ -132,25 +131,36 @@ class ChatFrame extends Component {
                                     onClick = {this.props.setPriorityFriend.bind(this)} 
                         />
                         
+                        
                         <ChatHistory 
                                     userLogged ={userLogged} users = {users}
                                     conversations = {conversations} paramID = {paramID} 
                                     onClick = {this.props.createConversation.bind(this)} 
                         />
                         
+                       
+
                         { conversation?
                             <div className="chat-message clearfix">
+                                
+                                
+                                
+
                                 <textarea onKeyPress = {(e) => this.handleSendMessageByEnter(e,conversation,userLogged)} name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" name = "tag" ref= "tags"></textarea>
                                 <button onClick = {() => this.handleSendMessage(conversation,userLogged)}>Send</button>   
+                                
+                                <label htmlFor="upload-photo">
+                                    <i className="fa fa-picture-o" aria-hidden="true" ></i>
+                                </label>
+                                <input type="file" name="photo" id="upload-photo" onChange={(event) => func.handleChangeFile(event,conversation,userLogged)} /> 
+
                             </div>
                         :null}
-                        
                     </div>
-                            <form>
-                            
-                            <input type="file"  onChange={func.handleChangeFile.bind(this) }></input>
-                            <button class = "btn btn-primary" type = "submit"> Upload file</button>
-                            </form>
+                    
+                    
+
+                              
                     </div>
                     
                 </div>
