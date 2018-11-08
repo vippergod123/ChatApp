@@ -4,6 +4,7 @@ import { isEmpty } from 'react-redux-firebase';
 import moment from 'moment';
 import LoadingSpinner from '../Plugin/LoadingSpinner';
 import { HashUID } from '../../GlobalFunction/HashFunction';
+import isUrl from "is-url"
 
 function mapStateToProps(state,ownProps) {
     return {
@@ -18,6 +19,18 @@ var buttonStyle = {
   overflow: "hidden",
   outline:"none"
 }
+
+var linkImageStyle = {
+  wordWrap: "break-word",
+} 
+
+var imageStyle ={ 
+  width : "auto",
+  height : "auto",
+  maxWidth: "100%",
+}
+
+
 
 const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) => {
 
@@ -75,7 +88,17 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
                                       </div>
 
                                       <div className="message other-message right ">
-                                          <div className = "right"> {each.text}</div>
+                                          
+                                          {isUrl(each.text) ?
+                                              <div style = {linkImageStyle}>
+                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}>{each.text}</a>
+                                              
+                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}><img style ={imageStyle} src = {each.text}></img> </a>
+                                              </div>
+                                              :
+                                              <div className = "right"> {each.text}</div> 
+                                          }
+                                          
                                       </div>
                                   </li>
                             )
@@ -90,7 +113,14 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
 
                                   </div>
                                   <div className="message my-message left">
-                                        {each.text}
+                                  {isUrl(each.text) ?
+                                              <div style = {linkImageStyle} >
+                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}>{each.text}</a>
+                                              <a style = {linkImageStyle} target="_blank" rel="noopener noreferrer" href={each.text}><img style ={imageStyle} src = {each.text}></img> </a>
+                                              </div>
+                                              :
+                                              <div> {each.text}</div> 
+                                          }
                                   </div>
                                 </li>
                             )

@@ -24,18 +24,15 @@ const ListFriend = ({userLogged, users, conversations, onClick}) => {
     var friends = users;
     if(isEmpty(friends)) { 
         return (
-            <div className="people-list" id="people-list">
-            <div className="search">
-            <input type="text" placeholder="Search..." />
-            </div>
+            <div>
             <LoadingSpinner/>
             </div>
         )
     }
     else {
-        friends = friends.filter(function( obj ) {
-            return obj.uid !== userLogged.uid ;
-        });
+        // friends = friends.filter(function( obj ) {
+        //     return obj.uid !== userLogged.uid ;
+        // });
 
         friends.sort((a,b) => { 
             if (a.status > b.status)
@@ -60,10 +57,8 @@ const ListFriend = ({userLogged, users, conversations, onClick}) => {
         
         
         return (
-                <div className="people-list" id="people-list">
-                <div className="search">
-                    <input type="text" placeholder="Search..." />
-                </div>
+                <div>
+               
     
                 <ul className="list">
                     {friends.map((each,index) => {

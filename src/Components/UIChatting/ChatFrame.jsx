@@ -4,32 +4,39 @@ import React, { Component } from 'react';
 //component
 import ChatHeader  from './ChatHeader'
 import ListFriend from './ListFriend'
+import ChatHistory from './ChatHistory';
+
 //
 import {connect} from 'react-redux'
-import { createConversation, sendMessage } from '../../Store/Actions/conversationActions';
-import { setPriorityFriend } from '../../Store/Actions/userActions';
-import ChatHistory from './ChatHistory';
 import { isEmpty, firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+
+//Action
+import { filterFriendsByName } from '../../Store/Actions/friendsActions';
+import { createConversation, sendMessage } from '../../Store/Actions/conversationActions';
+import { setPriorityFriend } from '../../Store/Actions/userActions';
+import { uploadImage } from '../../Store/Actions/uploadFileActions';
+
 
 //plugin
 import LoadingSpinner from '../Plugin/LoadingSpinner';
 import { HashUID } from '../../GlobalFunction/HashFunction';
+import userDatabaseReducer from '../../Store/Reducers/userDatabaseReducer';
+import { getFirebase, reactReduxFirebase } from 'react-redux-firebase'
 
-
+//Function 
+import * as func from "./Function"
 
 class ChatFrame extends Component {
 
+    constructor(props) {
+        super(props);
+      
+    }
+
+    
     handleClickFriends(userLogged,userClicked) { 
         this.props.history.replace("../chat/"+userClicked.uid);  
-    }
-
-    handleStarFriend(userClicked) { 
-        this.props.setPriorityFriend(userClicked)
-    }
-
-    handleCreateConversation(userLogged,userClicked) { 
-        this.props.createConversation(userLogged,userClicked)
     }
 
     handleSendMessage (conversation,userLogged){
@@ -67,7 +74,7 @@ class ChatFrame extends Component {
         const userLogged = this.props.auth
         const paramID = this.props.match.params.id
 
-        const users = this.props.fireStore.users;
+        var users = this.props.fireStore.users;
         const conversations = this.props.fireStore.conversations;
         
         if (!userLogged.uid){ 
@@ -93,27 +100,42 @@ class ChatFrame extends Component {
             var listConversation = conversations.filter (each => each.id === hashCode.toString())
             const conversation = listConversation[0]
             
-            console.log(conversation);
+
+            users = users.filter ( each => each.uid !== userLogged.uid)
+            var filterFriends = this.props.filterFriends
             
             return (
                 <div>
                     <div className="container">
                 
-                    <ListFriend userLogged = {userLogged} users = {users}
-                                conversations = {conversations}
-                                onClick = {this.handleClickFriends.bind(this)} />
+                    <div className="people-list" id="people-list">
+                        <div className="search">
+                            <input type="text" placeholder="search"
+                            onChange={e => {
+                                e.preventDefault()
+                                var displayName = e.target.value;
+                                
+                                this.props.filterFriendsByName(displayName,users,userLogged)
+                            }}
+                            />
+                        </div>
+                        <ListFriend userLogged = {userLogged} users = {!isEmpty(filterFriends)? filterFriends:users}
+                                    conversations = {conversations}
+                                    onClick = {this.handleClickFriends.bind(this)} />
+
+                    </div>
                     <div className="chat">
                         
                         <ChatHeader 
                                     userLogged = {userLogged} conversations = {conversations} 
                                     paramID = {paramID} users = {users} 
-                                    onClick = {this.handleStarFriend.bind(this)} 
+                                    onClick = {this.props.setPriorityFriend.bind(this)} 
                         />
                         
                         <ChatHistory 
                                     userLogged ={userLogged} users = {users}
                                     conversations = {conversations} paramID = {paramID} 
-                                    onClick = {this.handleCreateConversation.bind(this)} 
+                                    onClick = {this.props.createConversation.bind(this)} 
                         />
                         
                         { conversation?
@@ -124,7 +146,11 @@ class ChatFrame extends Component {
                         :null}
                         
                     </div>
-
+                            <form>
+                            
+                            <input type="file"  onChange={func.handleChangeFile.bind(this) }></input>
+                            <button class = "btn btn-primary" type = "submit"> Upload file</button>
+                            </form>
                     </div>
                     
                 </div>
@@ -135,11 +161,10 @@ class ChatFrame extends Component {
 }
 
 const mapStateToProps = (state) => { 
-    console.log(state.firestore);
-    
     return { 
         auth: state.firebase.auth,
-        fireStore: state.firestore.ordered
+        fireStore: state.firestore.ordered,
+        filterFriends: state.friends.filterFriends,
     }
 }
 
@@ -148,6 +173,8 @@ const mapDispatchToProps = (dispatch) => {
         setPriorityFriend: (user) => dispatch (setPriorityFriend(user)),
         createConversation: (authUser,userClicked) => dispatch(createConversation(authUser,userClicked)),
         sendMessage:(authUID,paramUID,message) =>  dispatch(sendMessage(authUID,paramUID,message)),
+        filterFriendsByName:(nameFilter,users,userLogged) => dispatch(filterFriendsByName(nameFilter,users,userLogged)),
+        uploadImage:(file) => dispatch(uploadImage(file)),
     }
 }
  
