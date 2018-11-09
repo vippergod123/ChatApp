@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { isEmpty } from 'react-redux-firebase';
-import LoadingSpinner from '../Plugin/LoadingSpinner';
+import LoadingSpinner from '../../Plugin/LoadingSpinner';
 import moment from 'moment';
 import ReactAvatar from 'react-avatar';
 

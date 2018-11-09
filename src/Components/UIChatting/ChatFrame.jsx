@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 
 //component
-import ChatHeader  from './ChatHeader'
-import ListFriend from './ListFriend'
-import ChatHistory from './ChatHistory';
+import ChatHeader  from './components/ChatHeader'
+import ListFriend from './components/ListFriend'
+import ChatHistory from './components/ChatHistory';
 
 //
 import {connect} from 'react-redux'

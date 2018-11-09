@@ -5,7 +5,7 @@ import ReactAvatar from 'react-avatar';
 
 
 //Global function 
-import {HashUID} from '../../GlobalFunction/HashFunction'
+import {HashUID} from '../../../GlobalFunction/HashFunction'
 function mapStateToProps(state, ownProps) {
     return {
 

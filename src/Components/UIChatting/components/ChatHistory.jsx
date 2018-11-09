@@ -1,7 +1,7 @@
 import React from 'react';
 
 ///Function
-import { HashUID } from '../../GlobalFunction/HashFunction';
+import { HashUID } from '../../../GlobalFunction/HashFunction';
 
 ///
 import { connect } from 'react-redux';
