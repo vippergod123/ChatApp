@@ -152,7 +152,8 @@ class ChatFrame extends Component {
                                 <label htmlFor="upload-photo">
                                     <i className="fa fa-picture-o" aria-hidden="true" ></i>
                                 </label>
-                                <input type="file" name="photo" id="upload-photo" onChange={(event) => func.handleChangeFile(event,conversation,userLogged)} /> 
+                                <span ref = "upload"></span>
+                                <input type="file" name="photo" id="upload-photo" onChange={(event) => func.handleChangeFile(event,conversation,userLogged,this.refs.upload)} /> 
 
                             </div>
                         :null}

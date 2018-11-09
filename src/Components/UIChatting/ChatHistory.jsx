@@ -142,7 +142,7 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
       } else { 
         return(
           <button style = {buttonStyle} onClick ={ () => onClick(userLogged,friend)}><div className = "card-action grey lighten-4 grey-text center flow-text">You and him have no any conversation yet. CLick here to make contact</div></button>
-        )
+        ) 
         
       }
   }

@@ -3,7 +3,7 @@ import { getFirestore } from 'redux-firestore'
 
 import { HashUID } from '../../GlobalFunction/HashFunction';
 
-export const handleChangeFile = (event, conversation,userLogged) => {
+export const handleChangeFile = (event, conversation,userLogged,upload) => {
     const file = event.target.files[0];
     console.log(file);
 
@@ -19,7 +19,8 @@ export const handleChangeFile = (event, conversation,userLogged) => {
     var task = storageRef.put(file);
     
     task.on('state_changed', function(snapshot){
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        var progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(2);
+        upload.innerText = " - " + progress + "%";
         console.log('Upload is ' + progress + '% done');
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
@@ -34,9 +35,10 @@ export const handleChangeFile = (event, conversation,userLogged) => {
         }
       }, err => {
             console.log(err);
-            
+            upload.innerText = " - Error " ;
       }, (downloadURL) => {
         console.log('Upload is SUCCESS');
+        upload.innerText = " - Success"
         task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
               console.log('File available at', downloadURL);
               const firestore = getFirestore();

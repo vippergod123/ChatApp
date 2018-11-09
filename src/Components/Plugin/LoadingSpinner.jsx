@@ -10,26 +10,21 @@ const override = css`
     border-color: red;
 `;
  
-export default class LoadingSpinner extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true
-    }
-  }
-  render() {
-    return (
+const LoadingSpinner = ({size, color}) =>  {
+  
+  return (
       <div className='sweet-loading'>
       <center>
         <ClipLoader
           className={override}
           sizeUnit={"px"}
-          size={50}
-          color={"green"}
-          loading={this.state.loading}
+          size={size?size:50}
+          color={color?color:"green"}
+          loading={true}
         />
         </center>
       </div> 
     )
-  }
 }
+
+export default LoadingSpinner
