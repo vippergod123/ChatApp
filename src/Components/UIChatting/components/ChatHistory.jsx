@@ -65,7 +65,6 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
             if ( each.uid === userLogged.uid) 
             { 
               each.position = "right"
-              each.displayName = userLogged.displayName
             }
             else {
               each.position = "left"

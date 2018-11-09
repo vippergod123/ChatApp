@@ -1,0 +1,41 @@
+[debug] [2018-11-09T19:24:37.320Z] ----------------------------------------------------------------------
+[debug] [2018-11-09T19:24:37.336Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\TAI-DANG\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2018-11-09T19:24:37.336Z] CLI Version:   6.0.1
+[debug] [2018-11-09T19:24:37.336Z] Platform:      win32
+[debug] [2018-11-09T19:24:37.336Z] Node Version:  v8.9.4
+[debug] [2018-11-09T19:24:37.336Z] Time:          Sat Nov 10 2018 02:24:37 GMT+0700 (SE Asia Standard Time)
+[debug] [2018-11-09T19:24:37.336Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-11-09T19:24:37.355Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-11-09T19:24:37.356Z] > authorizing via signed-in user
+[debug] [2018-11-09T19:24:37.356Z] [iam] checking project chatapp074 for permissions ["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]
+[debug] [2018-11-09T19:24:37.359Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/chatapp074:testIamPermissions  
+
+[debug] [2018-11-09T19:24:38.662Z] <<< HTTP RESPONSE 200
+[debug] [2018-11-09T19:24:38.663Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/chatapp074  
+ 
+[debug] [2018-11-09T19:24:39.062Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'chatapp074'...
+[info] 
+[info] i  deploying database, hosting
+[info] i  database: checking rules syntax...
+[debug] [2018-11-09T19:24:39.070Z] >>> HTTP REQUEST PUT https://chatapp074.firebaseio.com/.settings/rules.json?dryRun=true  
+ {
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+[debug] [2018-11-09T19:24:40.023Z] <<< HTTP RESPONSE 200
+[info] +  database: rules syntax for database chatapp074 is valid
+[debug] [2018-11-09T19:24:40.023Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/chatapp074/versions  
+
+[debug] [2018-11-09T19:24:42.042Z] <<< HTTP RESPONSE 200
+[info] i  hosting[chatapp074]: beginning deploy...
+[info] i  hosting[chatapp074]: found 21 files in build
+[debug] [2018-11-09T19:24:42.060Z] [hosting] hash cache [YnVpbGQ] load error: lines is not defined
+[debug] [2018-11-09T19:24:43.156Z] [hosting] hash cache [YnVpbGQ] stored for 21 files
+[debug] [2018-11-09T19:24:43.156Z] [hosting][hash queue][FINAL]
+[debug] [2018-11-09T19:24:43.156Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/chatapp074/versions/b82b7225b2a895cd:populateFiles  
+ <request body omitted>

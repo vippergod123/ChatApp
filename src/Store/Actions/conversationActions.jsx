@@ -92,6 +92,7 @@ export const sendMessage = (conversation,userLogged,message) => {
             sendAt: lastMilliseconds,
             uid: userLogged.uid,
             text: message,
+            displayName: userLogged.displayName,
         })
 
         const hashID = hashConversationID(users[0].user.uid,users[1].user.uid)
