@@ -90,7 +90,7 @@ export const sendMessage = (conversation,userLogged,message) => {
                     each.lastMessage = lastMilliseconds;
                 }
             })
-            console.log(listFriends);
+ 
             
             firestore.collection('friends').doc(users[0].user.uid.toString()).update ({
                 friends: listFriends,
@@ -117,7 +117,6 @@ export const sendMessage = (conversation,userLogged,message) => {
                     each.lastMessage = lastMilliseconds;
                 }
             })
-            console.log(listFriends);
             
             firestore.collection('friends').doc(users[1].user.uid.toString()).update ({
                 friends: listFriends,

@@ -19,10 +19,7 @@ var buttonStyle = {
     outline:"none"
 }
 
-const ListFriend = ({userLogged, friends, statusOnline, onClick}) => { 
-    
-    console.log(statusOnline);
-    console.log(friends);
+const ListFriend = ({userLogged, friends, onClick}) => { 
     
     if(isEmpty(friends)) { 
         return (
@@ -55,7 +52,7 @@ const ListFriend = ({userLogged, friends, statusOnline, onClick}) => {
         })
 
         friends.sort((a,b) => {     
-            if ( a.status === "online"  && b.status === "online" )
+            if ( (a.status === "online"  && b.status === "online") || (a.status === "online"  && b.status === "offline"))
                 return (a.priority === b.priority)? 0 : a.priority? -1 : 1;
         })
 

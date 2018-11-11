@@ -14,7 +14,7 @@ import { compose } from 'redux';
 //Action
 import { filterFriendsByName } from '../../Store/Actions/filterActions';
 import { createConversation, sendMessage } from '../../Store/Actions/conversationActions';
-import { setPriorityFriend } from '../../Store/Actions/userActions';
+import { setPriorityFriend ,createUser,setUserOnline} from '../../Store/Actions/userActions';
 import { uploadImage } from '../../Store/Actions/uploadFileActions';
 
 
@@ -29,9 +29,6 @@ class ChatFrame extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            imageUploadURL:null,
-        }
     }
 
     
@@ -65,8 +62,10 @@ class ChatFrame extends Component {
             if (elem) {
             elem.scrollTop = elem.scrollHeight;
             }
-        
+            
     }
+
+    
     render() {
         
         const userLogged = this.props.auth
@@ -76,6 +75,10 @@ class ChatFrame extends Component {
         const conversations = this.props.fireStore.conversations;
 
         var users = this.props.fireStore.users;
+        // if (this.state.isLoaded) { 
+        //     this.props.setUserOnline(userLogged);
+        // }
+        
 
         if (!userLogged.uid){ 
             return (
@@ -93,6 +96,8 @@ class ChatFrame extends Component {
         }
         else if ( userLogged ) {
             
+            
+
             var hashCode = HashUID(paramID,userLogged.uid); 
             var listConversation = conversations.filter (each => each.id === hashCode.toString())
             const conversation = listConversation[0]
@@ -125,7 +130,6 @@ class ChatFrame extends Component {
                         </div>
                         <ListFriend userLogged = {userLogged} 
                                     friends = {!isEmpty(filterFriends)? filterFriends:friends}
-                                    statusOnline ={users}
                                     onClick = {this.handleClickFriends.bind(this)} />
 
                     </div>
@@ -192,6 +196,7 @@ const mapDispatchToProps = (dispatch) => {
         sendMessage:(authUID,paramUID,message) =>  dispatch(sendMessage(authUID,paramUID,message)),
         filterFriendsByName:(nameFilter,users,userLogged) => dispatch(filterFriendsByName(nameFilter,users,userLogged)),
         uploadImage:(file) => dispatch(uploadImage(file)),
+        setUserOnline: (user) => dispatch(setUserOnline(user)),
     }
 }
  
@@ -202,3 +207,4 @@ export default compose(
         {collection: 'conversations'}
     ])
 )(ChatFrame)
+

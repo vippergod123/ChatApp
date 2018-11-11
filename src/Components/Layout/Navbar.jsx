@@ -20,9 +20,8 @@ class Navbar extends Component {
             isLoaded: false,
         }
     }
-    
-  
    
+    
     render() {
         const userLogged = this.props.auth
         const links = userLogged.uid ?  <SigninLink />: <SignoutLink/>
@@ -32,28 +31,23 @@ class Navbar extends Component {
         
         if (userLogged.uid && this.state.isLoaded === false && users && friends ) { 
             
-            this.props.createUser(userLogged)
-            this.props.setUserOnline(userLogged)
-            this.setState({ 
-                isLoaded: true,
-            })
-
-            // var findUser = users.findIndex( each => each.uid === userLogged.uid);
+            // this.props.createUser(userLogged)
             
-            // console.log(findUser);
+            // this.setState({ 
+            //     isLoaded: true,
+            // })
+     
+            // var findUser = friends.findIndex( each => each.id === userLogged.uid);
+  
             // if ( findUser === -1) { 
-            //     users = users.filter ( each => each.uid !== userLogged.uid)
             //     this.props.createFriend(userLogged,users);
             // }
-            console.log(friends);
-            var findUser = friends.findIndex( each => each.id === userLogged.uid);
-            console.log(findUser);
-            if ( findUser === -1) { 
-                this.props.createFriend(userLogged,users);
-            }
-            else {
-                // this.props.addFriend(userLogged,listUsers,friends);
-            }
+            // else {
+            //     friends = friends.filter(each => each.id === userLogged.uid);
+            //     this.props.addFriend(userLogged,users,friends[0].friends);
+            // }
+
+            // this.props.setUserOnline(userLogged);
         }
         else { 
 
@@ -75,7 +69,6 @@ class Navbar extends Component {
 const mapStateToProps = (state) => { 
     return { 
         auth: state.firebase.auth,
-        users: state.users,
         fireStore: state.firestore.ordered
     }
 }

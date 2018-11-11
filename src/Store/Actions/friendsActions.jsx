@@ -12,6 +12,7 @@ export const createFriend = (userLogged, listUsers) => {
             each.lastMessage = 0;
             each.priority = false;
             each.lastLoginAt = createMilisecond;
+            each.status = "online"
         })
 
         
@@ -49,8 +50,7 @@ export const addFriend = (userLogged, listUsers, friends) => {
         })
 
 
-        console.log(listUsers);
-        console.log(friends);
+
         
         listUsers.forEach(each => { 
             friends.forEach(friend => { 
@@ -58,12 +58,11 @@ export const addFriend = (userLogged, listUsers, friends) => {
                     each.lastMessage = friend.lastMessage;
                     each.priority = friend.priority;
                     each.lastLoginAt = friend.lastLoginAt;
+                    each.status = friend.status
                 }
             })
         })
 
-        console.log(listUsers);
-        console.log(friends);
       
         firestore.collection('friends').doc(userLogged.uid).set({                    
             friends: listUsers,

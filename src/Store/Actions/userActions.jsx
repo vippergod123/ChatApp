@@ -32,13 +32,13 @@ export const setUserOnline = (userLogged) => {
             snap.forEach(item => {
                 // item.data().freinds - item.id
                 var friends = item.data().friends;
-                console.log(friends);
                 
                 friends.map (each => {
-                    if (each.uid === userLogged.uid)
+                    if (each.uid === userLogged.uid) {
                         each.status = "online";
+                    }
+                        
                 })
-                console.log(friends);
                 
                 firestore.collection('friends').doc(item.id.toString()).update ({
                     friends: friends,
@@ -73,14 +73,13 @@ export const setUserOffline = (userLogged) => {
             snap.forEach(item => {
                 // item.data().freinds - item.id
                 var friends = item.data().friends;
-                console.log(friends);
                 
                 friends.map (each => {
-                    if (each.uid === userLogged.uid)
+                    if (each.uid === userLogged.uid) {
                         each.status = "offline";
                         each.lastLoginAt = lastMiliSecond;
+                    }
                 })
-                console.log(friends);
                 
                 firestore.collection('friends').doc(item.id.toString()).update ({
                     friends: friends,
@@ -118,12 +117,9 @@ export const setPriorityFriend = (userLogged, friend) => {
             listFriends.map (each => {
                 
                 if (friend.uid === each.uid) { 
-                    console.log(each.displayName);
-                    
                     each.priority = !each.priority;
                 }
             })
-            console.log(listFriends);
             
             friends.update ({
                 friends: listFriends,
