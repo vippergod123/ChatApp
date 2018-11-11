@@ -36,7 +36,6 @@ class SigninLink extends Component {
     render() {
         const userLogged = this.props.auth
         const signOutBtn = <NavLink className ="red-text"to = "/signin" onClick = { () => {this.handleLogOut(userLogged)}}>Sign Out</NavLink>
-        // const avatarBtn =<Avatar googleID={this.props.auth.providerData["0"].uid} size = {40} round = {true}/>
         const dropDownButton = (
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                     

@@ -6,7 +6,7 @@ import SignoutLink from './SignoutLink';
 
 //Action
 import {createUser,setUserOnline} from '../../Store/Actions/userActions'
-import {createFriend} from "../../Store/Actions/friendsActions"
+import {createFriend,addFriend} from "../../Store/Actions/friendsActions"
 //
 import {connect} from 'react-redux'
 import {firestoreConnect, isLoaded} from 'react-redux-firebase'
@@ -22,9 +22,7 @@ class Navbar extends Component {
     }
     
   
-    componentDidMount() {
-      }
-      
+   
     render() {
         const userLogged = this.props.auth
         const links = userLogged.uid ?  <SigninLink />: <SignoutLink/>
@@ -52,6 +50,9 @@ class Navbar extends Component {
             console.log(findUser);
             if ( findUser === -1) { 
                 this.props.createFriend(userLogged,users);
+            }
+            else {
+                // this.props.addFriend(userLogged,listUsers,friends);
             }
         }
         else { 
@@ -85,6 +86,7 @@ const mapDispatchToProps = (dispatch) => {
         createUser: (user) => dispatch(createUser(user)),
         createFriend: (userLogged,listUsers) => dispatch(createFriend(userLogged,listUsers)),
         setUserOnline: (user) => dispatch(setUserOnline(user)),
+        addFriend: (userLogged, listUsers, friends)  => dispatch(addFriend(userLogged, listUsers, friends))
     }
 }
 export default compose(
