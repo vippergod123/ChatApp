@@ -55,7 +55,7 @@ const ListFriend = ({userLogged, friends, statusOnline, onClick}) => {
         })
 
         friends.sort((a,b) => {     
-            if ( a.status === "online"  && a.priority === true)        
+            if ( (a.status === "online"  && a.priority === true) && (b.status === "online"  && b.priority === true))
             return (a.priority === b.priority)? 0 : a.priority? -1 : 1;
         })
 
