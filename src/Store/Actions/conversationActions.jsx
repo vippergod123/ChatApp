@@ -80,25 +80,19 @@ export const sendMessage = (conversation,userLogged,message) => {
             lastMessageAt: lastMilliseconds
         })  
 
-        var friends = firestore.collection('friends').doc(userLogged.uid.toString())
-        
-        var listFriends = [];
-        console.log(users);
-        
-        friends.get().then( thisDoc => { 
+        firestore.collection('friends').doc(users[0].user.uid.toString()).get().then( thisDoc => { 
+            var listFriends = [];
             listFriends = thisDoc.data().friends;
             
             
             listFriends.map (each => {
-                var userChat = users.filter(each => each.user.uid !== userLogged.uid);
-                
-                if (each.uid === userChat[0].user.uid) { 
+                if (each.uid === users[1].user.uid) { 
                     each.lastMessage = lastMilliseconds;
                 }
             })
             console.log(listFriends);
             
-            friends.update ({
+            firestore.collection('friends').doc(users[0].user.uid.toString()).update ({
                 friends: listFriends,
             }).then( () =>  { 
                 dispatch({
@@ -112,6 +106,32 @@ export const sendMessage = (conversation,userLogged,message) => {
             })
         })
 
+       
+        firestore.collection('friends').doc(users[1].user.uid.toString()).get().then( thisDoc => { 
+            var listFriends = [];
+            listFriends = thisDoc.data().friends;
+            
+            
+            listFriends.map (each => {
+                if (each.uid === users[0].user.uid) { 
+                    each.lastMessage = lastMilliseconds;
+                }
+            })
+            console.log(listFriends);
+            
+            firestore.collection('friends').doc(users[1].user.uid.toString()).update ({
+                friends: listFriends,
+            }).then( () =>  { 
+                dispatch({
+                    type: "SEND_MESSAGE_SUCCESS",
+                });
+            }).catch((err) => {
+                dispatch({
+                    type: "SEND_MESSAGE_ERROR",
+                    err: err,
+                });
+            })
+        })
 
         
 
