@@ -70,7 +70,7 @@ const ChatHistory  = ({userLogged, users, conversations, paramID, onClick, }) =>
               each.position = "left"
             }
         })
-
+        conversation.friends = "a"
         return (
               <div>
                 

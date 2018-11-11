@@ -1,23 +1,32 @@
-export const filterFriendsByName = (nameFilter, users,userLogged) => { 
-    return (dispatch) => { 
+export const createFriend = (userLogged, listUsers) => {
+    
+    return (dispatch,getState, {getFirebase, getFirestore}) => { 
+        const firestore = getFirestore();
 
-        var filterFriends = users 
+        var date = new Date(); // some mock date
+        var createMilisecond = date.getTime();
         
-        filterFriends = filterFriends.filter(each=> each.uid !== userLogged.uid);
-        
-        if(nameFilter) {
-            filterFriends = filterFriends.filter(each=> each.displayName.toLowerCase().search(nameFilter.toLowerCase()) >= 0);
-            dispatch({
-                type: "FILTER_FRIENDS_SUCCESS",
-                filterFriends: filterFriends,
-            })
-        }
+        listUsers = listUsers.filter(each => each.uid !== userLogged.uid);
 
-        else {
+        listUsers.map(each => { 
+            each.lastMessage = 0;
+            each.priority = false;
+            each.lastLoginAt = createMilisecond;
+        })
+
+        
+        
+        firestore.collection('friends').doc(userLogged.uid).set({                    
+            friends: listUsers,
+        }).then( () =>  { 
             dispatch({
-                type: "FILTER_FRIENDS_SUCCESS",
-                filterFriends: filterFriends,
-            })
-        }
+                type: "CREATE_FRIEND",
+            });
+        }).catch((err) => {
+            dispatch({
+                type: "CREATE_FRIEND_ERROR",
+                err: err,
+            });
+        })
     }
 }

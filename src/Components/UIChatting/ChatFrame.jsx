@@ -12,7 +12,7 @@ import { isEmpty, firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 
 //Action
-import { filterFriendsByName } from '../../Store/Actions/friendsActions';
+import { filterFriendsByName } from '../../Store/Actions/filterActions';
 import { createConversation, sendMessage } from '../../Store/Actions/conversationActions';
 import { setPriorityFriend } from '../../Store/Actions/userActions';
 import { uploadImage } from '../../Store/Actions/uploadFileActions';
@@ -44,8 +44,6 @@ class ChatFrame extends Component {
         const  message = this.refs.tags.value;
         this.refs.tags.value = null
         
-        
-        
         this.props.sendMessage(conversation, userLogged, message)
     }
 
@@ -74,9 +72,11 @@ class ChatFrame extends Component {
         const userLogged = this.props.auth
         const paramID = this.props.match.params.id
 
-        var users = this.props.fireStore.users;
+        var friends = this.props.fireStore.friends;
         const conversations = this.props.fireStore.conversations;
-        
+
+        var users = this.props.fireStore.users;
+
         if (!userLogged.uid){ 
             return (
                 <div>
@@ -86,9 +86,7 @@ class ChatFrame extends Component {
                 
             )
         }
-        else if ( !users || !conversations)  { 
-            
-            console.log(typeof(conversations))
+        else if ( isEmpty(friends) || !conversations)  { 
             return (
                 <LoadingSpinner/>
             )
@@ -99,9 +97,16 @@ class ChatFrame extends Component {
             var listConversation = conversations.filter (each => each.id === hashCode.toString())
             const conversation = listConversation[0]
             
+        
+           
 
-            users = users.filter ( each => each.uid !== userLogged.uid)
+            friends = friends.filter ( each => each.id === userLogged.uid)
+            if(!isEmpty(friends[0]))
+                friends = friends[0].friends;
+
             var filterFriends = this.props.filterFriends
+
+           
             
             return (
                 <div>
@@ -114,12 +119,13 @@ class ChatFrame extends Component {
                                 e.preventDefault()
                                 var displayName = e.target.value;
                                 
-                                this.props.filterFriendsByName(displayName,users,userLogged)
+                                this.props.filterFriendsByName(displayName,friends,userLogged)
                             }}
                             />
                         </div>
-                        <ListFriend userLogged = {userLogged} users = {!isEmpty(filterFriends)? filterFriends:users}
-                                    conversations = {conversations}
+                        <ListFriend userLogged = {userLogged} 
+                                    friends = {!isEmpty(filterFriends)? filterFriends:friends}
+                                    statusOnline ={users}
                                     onClick = {this.handleClickFriends.bind(this)} />
 
                     </div>
@@ -127,13 +133,13 @@ class ChatFrame extends Component {
                         
                         <ChatHeader 
                                     userLogged = {userLogged} conversations = {conversations} 
-                                    paramID = {paramID} users = {users} 
+                                    paramID = {paramID} users = {friends} 
                                     onClick = {this.props.setPriorityFriend.bind(this)} 
                         />
                         
                         
                         <ChatHistory 
-                                    userLogged ={userLogged} users = {users}
+                                    userLogged ={userLogged} users = {friends} 
                                     conversations = {conversations} paramID = {paramID} 
                                     onClick = {this.props.createConversation.bind(this)} 
                         />
@@ -147,7 +153,7 @@ class ChatFrame extends Component {
                                 
 
                                 <textarea onKeyPress = {(e) => this.handleSendMessageByEnter(e,conversation,userLogged)} name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3" name = "tag" ref= "tags"></textarea>
-                                <button onClick = {() => this.handleSendMessage(conversation,userLogged)}>Send</button>   
+                                <button onClick = {() => this.handleSendMessage(conversation,userLogged,friends)}>Send</button>   
                                 
                                 <label htmlFor="upload-photo">
                                     <i className="fa fa-picture-o" aria-hidden="true" ></i>
@@ -175,13 +181,13 @@ const mapStateToProps = (state) => {
     return { 
         auth: state.firebase.auth,
         fireStore: state.firestore.ordered,
-        filterFriends: state.friends.filterFriends,
+        filterFriends: state.filter.filter,
     }
 }
 
 const mapDispatchToProps = (dispatch) => { 
     return {
-        setPriorityFriend: (user) => dispatch (setPriorityFriend(user)),
+        setPriorityFriend: (userLogged, friend) => dispatch (setPriorityFriend(userLogged, friend)),
         createConversation: (authUser,userClicked) => dispatch(createConversation(authUser,userClicked)),
         sendMessage:(authUID,paramUID,message) =>  dispatch(sendMessage(authUID,paramUID,message)),
         filterFriendsByName:(nameFilter,users,userLogged) => dispatch(filterFriendsByName(nameFilter,users,userLogged)),

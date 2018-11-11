@@ -19,9 +19,11 @@ var buttonStyle = {
     outline:"none"
 }
 
-const ListFriend = ({userLogged, users, conversations, onClick}) => { 
-    console.log(users);
-    var friends = users;
+const ListFriend = ({userLogged, friends, statusOnline, onClick}) => { 
+    
+    console.log(statusOnline);
+    console.log(friends);
+    
     if(isEmpty(friends)) { 
         return (
             <div>
@@ -29,33 +31,34 @@ const ListFriend = ({userLogged, users, conversations, onClick}) => {
             </div>
         )
     }
+    else if ( friends.lenght === 0) { 
+        return (
+            <div>
+            <div className = "flow-text center"> <br/> Make friends to have a </div>
+            
+        </div>
+        )
+    }
     else {
         // friends = friends.filter(function( obj ) {
         //     return obj.uid !== userLogged.uid ;
         // });
 
-        friends.sort((a,b) => { 
-            if (a.status > b.status)
-                return -1;
-            if (a.status < b.status)
-                return 1;
-            return (a.priority === b.priority)? 0 : a.priority? -1 : 1;
-            
-        })
+        
 
         friends.sort((a,b) => { 
-            if (a.status === "offline" && b.status === "offline") {
-                if (a.lastLoginAt > b.lastLoginAt)
-                    return -1;
-                if (a.lastLoginAt < b.lastLoginAt)
-                    return 1;
-                return 0
-            }
+            if (a.lastMessage > b.lastMessage)
+                return -1;
+            if (a.lastMessage < b.lastMessage)
+                return 1;
+            return 0
         })
-       
-        console.log(friends);
-        
-        
+
+        friends.sort((a,b) => {     
+            if ( a.status === "online"  && a.priority === true)        
+            return (a.priority === b.priority)? 0 : a.priority? -1 : 1;
+        })
+
         return (
                 <div>
                
@@ -77,7 +80,7 @@ const ListFriend = ({userLogged, users, conversations, onClick}) => {
                                 :<div className="name white-text">{each.displayName}</div>}
 
                                 <div className="status">
-                                {each.status === "online"? <div>{each.status} <i className="fa fa-circle online"></i> </div> : <div> offline: {moment(date).fromNow() } <i className="fa fa-circle offline"></i></div>}
+                                {each.status === "online"? <div>{each.status} <i className="fa fa-circle online"></i> </div> : <div>off: {moment(date).fromNow()}</div>}
 
                                 </div>
                             </div>

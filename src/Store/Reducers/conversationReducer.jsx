@@ -25,7 +25,7 @@ const conversationReducers = (state = initState, action) => {
         ////            
         case "SEND_MESSAGE_SUCCESS":
             console.log('SEND_MESSAGE_SUCCESS');
-            return action.conversation;
+            return state;
         case "SEND_MESSAGE_ERROR":
             console.log('SEND_MESSAGE_ERROR', action.err);
             return state;

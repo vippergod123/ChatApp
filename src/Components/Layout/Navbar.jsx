@@ -6,7 +6,7 @@ import SignoutLink from './SignoutLink';
 
 //Action
 import {createUser,setUserOnline} from '../../Store/Actions/userActions'
-
+import {createFriend} from "../../Store/Actions/friendsActions"
 //
 import {connect} from 'react-redux'
 import {firestoreConnect, isLoaded} from 'react-redux-firebase'
@@ -28,13 +28,31 @@ class Navbar extends Component {
     render() {
         const userLogged = this.props.auth
         const links = userLogged.uid ?  <SigninLink />: <SignoutLink/>
+        var users = this.props.fireStore.users
+        var friends = this.props.fireStore.friends;
         
-        if (userLogged.uid && this.state.isLoaded === false) { 
+        
+        if (userLogged.uid && this.state.isLoaded === false && users && friends ) { 
+            
             this.props.createUser(userLogged)
             this.props.setUserOnline(userLogged)
             this.setState({ 
                 isLoaded: true,
             })
+
+            // var findUser = users.findIndex( each => each.uid === userLogged.uid);
+            
+            // console.log(findUser);
+            // if ( findUser === -1) { 
+            //     users = users.filter ( each => each.uid !== userLogged.uid)
+            //     this.props.createFriend(userLogged,users);
+            // }
+            console.log(friends);
+            var findUser = friends.findIndex( each => each.id === userLogged.uid);
+            console.log(findUser);
+            if ( findUser === -1) { 
+                this.props.createFriend(userLogged,users);
+            }
         }
         else { 
 
@@ -65,42 +83,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => { 
     return { 
         createUser: (user) => dispatch(createUser(user)),
+        createFriend: (userLogged,listUsers) => dispatch(createFriend(userLogged,listUsers)),
         setUserOnline: (user) => dispatch(setUserOnline(user)),
     }
 }
-
 export default compose(
     connect(mapStateToProps,mapDispatchToProps),
     firestoreConnect((props) => [
         {collection: 'users'},
+        {collection: 'friends'},
     ])
 )(Navbar);
-
-
-
-
-// //Solution
-// console.log(props.auth);
-
-//         const firebase = getFirebase()
-//         firebase.database().ref('Friends/' + props.auth.uid).set({
-//             lastLoginAt: props.auth.lastLoginAt,
-//             status:'online'
-//           });
-//         // const loginAt = new Date();
-//         // itemRef.ref('Friends').child(props.auth.uid).push({
-//         //     lastLoginAt: props.auth.lastLoginAt,
-//         //     status: "online"
-//         // })
-//         const patients =[];
-//         var rootRef = firebase.database().ref().child("Friends");
-//         rootRef.on("child_added", snap => {
-//             // Store all the labels in array
-            
-//             patients.push({
-//                 status: snap.val(),
-//                 uid: snap.key
-//             })
-            
-//         });
-//         console.log(patients)

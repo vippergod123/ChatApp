@@ -37,7 +37,7 @@
 .people-list ul {
     padding: 20px;
     height: 706px;
-    overflow-y: scroll, auto;
+    overflow-y: scroll;
     direction: rtl;
 }
 

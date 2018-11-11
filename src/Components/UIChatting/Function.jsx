@@ -5,7 +5,6 @@ import { HashUID } from '../../GlobalFunction/HashFunction';
 
 export const handleChangeFile = (event, conversation,userLogged,upload) => {
     const file = event.target.files[0];
-    console.log(file);
 
     var history = conversation.history
     var users =  conversation.users
@@ -21,29 +20,24 @@ export const handleChangeFile = (event, conversation,userLogged,upload) => {
     task.on('state_changed', function(snapshot){
         var progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(2);
         upload.innerText = " - " + progress + "%";
-        console.log('Upload is ' + progress + '% done');
         switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED: // or 'paused'
-            console.log('Upload is paused');
-            break;
-          case firebase.storage.TaskState.RUNNING: // or 'running'
-            console.log('Upload is running');
-            break;
-        case firebase.storage.TaskState.SUCCESS: // or 'running'
-            console.log('Upload is SUCCESS');
-            break;
+        //   case firebase.storage.TaskState.PAUSED: // or 'paused'
+        //     console.log('Upload is paused');
+        //     break;
+        //   case firebase.storage.TaskState.RUNNING: // or 'running'
+        //     console.log('Upload is running');
+        //     break;
+        // case firebase.storage.TaskState.SUCCESS: // or 'running'
+        //     console.log('Upload is SUCCESS');
+        //     break;
         }
       }, err => {
-            console.log(err);
-            upload.innerText = " - Error " ;
+            upload.innerText = " - " + err ;
       }, (downloadURL) => {
-        console.log('Upload is SUCCESS');
         upload.innerText = " - Success"
         task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-              console.log('File available at', downloadURL);
               const firestore = getFirestore();
 
-              
               var date = new Date(); // some mock date
               var lastMilliseconds = date.getTime();
               
@@ -59,6 +53,5 @@ export const handleChangeFile = (event, conversation,userLogged,upload) => {
               })
           });        
       });
-    //Make a request to server and send formData
 }
 

@@ -31,7 +31,7 @@ export const createConversation = (authUser,userClicked) => {
                 {user:  userClicked}
             ],
             timeCreatedAt: createMilisecond,
-            lastMessage: 0,
+            lastMessage: createMilisecond,
             history: [{
                 sendAt: createMilisecond,
                 text: "Hello !",
@@ -49,28 +49,7 @@ export const createConversation = (authUser,userClicked) => {
             });
         })
 
-        // firebase.database().ref('conversation/' + hashID ).update({
-            
-        //     users:[
-        //         {user: authUser},
-        //         {user:  userClicked}
-        //     ],
-        //     timeCreatedAt: createMilisecond,
-        //     history: [{
-        //         sendAt: createMilisecond,
-        //         text: "Hello !",
-        //         uid: authUser.uid
-        //     }]
-        // }).then( () => { 
-        //     dispatch({ 
-        //         type: "CREAT_CONVERSATION_SUCCESS",
-        //     })
-        // }).catch( err => { 
-        //     dispatch({ 
-        //         type: "CREAT_CONVERSATION_ERROR",
-        //         err: err,
-        //     })
-        // });
+     
         
     }
 }
@@ -99,15 +78,46 @@ export const sendMessage = (conversation,userLogged,message) => {
         firestore.collection('conversations').doc(hashID.toString()).update({                    
             history: history,
             lastMessageAt: lastMilliseconds
-        }).then( () =>  { 
-            dispatch({
-                type: "SEND_MESSAGE_SUCCESS",
-            });
-        }).catch((err) => {
-            dispatch({
-                type: "SEND_MESSAGE_ERROR",
-                err: err,
-            });
         })  
+
+        var friends = firestore.collection('friends').doc(userLogged.uid.toString())
+        
+        var listFriends = [];
+        console.log(users);
+        
+        friends.get().then( thisDoc => { 
+            listFriends = thisDoc.data().friends;
+            
+            
+            listFriends.map (each => {
+                var userChat = users.filter(each => each.user.uid !== userLogged.uid);
+                
+                if (each.uid === userChat[0].user.uid) { 
+                    each.lastMessage = lastMilliseconds;
+                }
+            })
+            console.log(listFriends);
+            
+            friends.update ({
+                friends: listFriends,
+            }).then( () =>  { 
+                dispatch({
+                    type: "SEND_MESSAGE_SUCCESS",
+                });
+            }).catch((err) => {
+                dispatch({
+                    type: "SEND_MESSAGE_ERROR",
+                    err: err,
+                });
+            })
+        })
+
+
+        
+
+
+        
+
+
     }
 }
